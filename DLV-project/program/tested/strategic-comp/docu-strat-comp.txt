@@ -1,0 +1,37 @@
+Suppose a holding owns some companies.  Each company produces a set of
+products. Each product is produced by at most two companies.  As an
+example, pasta is produced by Barilla and Saiwa, while wine is produced
+only by Barilla \footnote{foodnote: Any coincidence with existing
+companies is purely casual.}. 
+
+Suppose the holding experiences a crisis and has to sell one company.  The
+holding's policy is to keep on producing all products.  This clearly makes
+it impossible to sell some companies --as an example the Barilla company
+in the above situation, because it would be impossible to produce wine. 
+Anyway the managers are even more cautious:  They know that in the future
+it may be necessary to sell more companies, and they do not want to get
+into a situation in which they will not be able to produce all products. 
+More formally, they are interested in the minimal sets of companies that
+produce all products.  A company is {\it strategic\/} if it is in at least
+one of such minimal sets.  Therefore a query which is very relevant to the
+managers is whether a company is strategic or not: They prefer to sell a
+non-strategic company first, because after the transaction the minimal
+sets of companies that produce all products remain the same. 
+
+
+Now let us consider a slightly more complex situation, in which up to
+three (say) companies can {\it control\/} another company.  As an example,
+companies Barilla and Saiwa together have control over company Frutto. 
+
+Assume now that the following constraint is imposed for determining
+strategic co mpanies: A company $A$ which is controlled by the companies
+$B_1$, \ldots, $B_i$ can be sold only if also one of the companies $B_1$,
+\ldots, $B_i$ is sold. This constraint completely changes the minimal sets
+of companies that produce all pro ducts. 
+
+In the former case --no controlled companies-- the problem of deciding
+whether a company is strategic is in the complexity class NP (cf.\
+\cite{cado-lenz-94}), while in the latter case the same problem is easily
+shown to be complete for the class $\Sigma^p_2$ of the polynomial
+hierarchy (cf.\ \cite{eite-gott-93a}). 
+

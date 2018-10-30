@@ -1,0 +1,3 @@
+is_parent(X):- parent(X,_).
+parent(peter,john).
+

@@ -1,0 +1,19 @@
+1) check correct databse status
+
+isql testodbc dlvodbc dlvodbc
+DROP TABLE IF EXISTS graph;
+CREATE TABLE graph(ID1 int , ID2 int);
+
+DROP TABLE IF EXISTS graphcol;
+CREATE TABLE graphcol(ID1 int , ID2 char);
+
+2) populate the graph table
+dlv populatedb
+
+3)solve the problem and store in the graphcol table
+dlv 3col
+
+Given the graph is built with avl,  It is already available a file of facts.
+So, instead of step 2/3 execute : 
+./dlv.x86-64-linux-elf-unixodbc.bin '/home/biar/Desktop/krstproj/program/tested/3coloring/3colnosql' -v '/home/biar/Desktop/krstproj/program/tested/3coloring/3col.l8'
+

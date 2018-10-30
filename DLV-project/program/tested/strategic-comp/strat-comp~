@@ -1,0 +1,38 @@
+ produced_by(pasta   , barilla ,saiwa).
+ produced_by(tomatoes, frutto  ,barilla).
+ produced_by(wine    , barilla ,0).
+ produced_by(bread   , saiwa   ,panino).
+ produced_by(beer    , heineken,budweiser).
+
+ controlled_by(frutto   , barilla  ,saiwa,0).
+ controlled_by(budweiser, heineken ,0    ,0).
+ controlled_by(heineken , saiwa    ,0    ,0).
+ controlled_by(saiwa    , budweiser,0    ,0).
+
+
+% As we want to produce X, Y or Z must be strategic.
+
+ strategic(Y) v strategic(Z) :- produced_by(X,Y,Z).
+
+% Z can be zero and 0 is not a valid strategic company
+
+ :- strategic(0).
+
+
+
+
+%redefined a new predicate because if a company is controlled by less of 3 companies is a strategic company
+%even if strategic(0) is false
+
+
+ Strategic(X) :- strategic(X).
+ Strategic(0) :- true.
+
+% W is strategic, if it is controlled by Strategic
+% companies X, Y, and Z  where Strategic(0) is true and means a company is controlled by less of three companies
+
+ strategic(W) :- controlled_by(W,X,Y,Z), Strategic(X), Strategic(Y), Strategic(Z).
+
+true.
+
+#export(testodbc,"dlvodbc","dlvodbc",strategic,strat).

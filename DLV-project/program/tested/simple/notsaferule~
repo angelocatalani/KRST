@@ -1,0 +1,3 @@
+a(X):-not a(X).
+a(X,Y):-b(Y).
+a(Z):-b(Z),X<Z.

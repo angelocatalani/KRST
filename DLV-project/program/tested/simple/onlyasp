@@ -1,0 +1,3 @@
+a:- not b.
+% the minimal models are I1={a} or I2={b} but the reduct of I1 is {a}, while the
+%other is {}. 

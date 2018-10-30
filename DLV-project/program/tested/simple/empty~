@@ -1,0 +1,2 @@
+person(X):- male(X) v female(X).
+

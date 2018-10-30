@@ -1,0 +1,1937 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"><title>DLV - User Manual</title><meta name="GENERATOR" content="Modular DocBook HTML Stylesheet Version 1.79"></head><body class="BOOK" vlink="#840084" bgcolor="#FFFFFF" link="#0000FF" text="#000000" alink="#0000FF"><div class="BOOK"><a name="AEN1"></a><div class="TITLEPAGE"><h1 class="TITLE"><a name="AEN2">DLV - User Manual</a></h1><h3 class="AUTHOR"><a name="AEN5"></a>Robert Bihlmeyer</h3><h3 class="AUTHOR"><a name="AEN8"></a>Wolfgang Faber</h3><h3 class="AUTHOR"><a name="AEN11"></a>Giuseppe Ielpa</h3><h3 class="AUTHOR"><a name="AEN14"></a>Vincenzino Lio</h3><h3 class="AUTHOR"><a name="AEN17"></a>Gerald Pfeifer</h3><hr></div><div class="TOC"><dl><dt><b>Table of Contents</b></dt><dt><a href="#AEN23">Overview</a></dt><dt>1. <a href="#AEN30">Getting Started</a></dt><dt>2. <a href="#DISJUNCTIVE.DATALOG">The Core Language of DLV: Disjunctive Datalog</a></dt><dd><dl><dt><a href="#AEN170">Comments</a></dt><dt><a href="#AEN178">EDB - Extensional Database</a></dt><dt><a href="#AEN220">IDB - Intensional Database</a></dt><dd><dl><dt><a href="#AEN264">Definite Rules</a></dt><dt><a href="#AEN333">Disjunctive Rules</a></dt><dt><a href="#AEN375">Negative Rules</a></dt><dt><a href="#AEN411">True Negation</a></dt></dl></dd><dt><a href="#AEN445">Integrity Constraints</a></dt><dt><a href="#AEN474">Weak Constraints</a></dt><dt><a href="#AEN546">Built-in predicates</a></dt><dd><dl><dt><a href="#BUILTIN-COMPARATIVE">Comparative Predicates</a></dt><dt><a href="#BUILTIN-ARITHMETIC">Arithmetic Predicates</a></dt><dt><a href="#BUILTIN-LIST">List Predicates</a></dt><dt><a href="#BUILTIN-RANGES">Facts over a fixed Integer Range</a></dt></dl></dd><dt><a href="#BUILTIN-CONSTANTS">Built-in constants</a></dt><dt><a href="#NAMED-CONSTANTS">Named constants</a></dt><dt><a href="#AGGREGATES">Aggregate Predicates</a></dt><dd><dl><dt><a href="#AEN1004">Symbolic Sets</a></dt><dt><a href="#AEN1040">Aggregate Functions</a></dt><dt><a href="#AEN1127">Knowledge Representation Using Aggregate Predicates</a></dt></dl></dd></dl></dd><dt>3. <a href="#SAFETY">Safety</a></dt><dd><dl><dt><a href="#AEN1154">Standard, Arithmetic and Comparative Predicates</a></dt><dt><a href="#AEN1191">Aggregates</a></dt><dt><a href="#AEN1234">Finite Domain Check</a></dt><dd><dl><dt><a href="#AEN1240">Arithmetic Predicates</a></dt><dt><a href="#AEN1250">Complex Terms</a></dt></dl></dd></dl></dd><dt>4. <a href="#QUERIES">Queries</a></dt><dd><dl><dt><a href="#BRAVE">Brave Reasoning</a></dt><dd><dl><dt><a href="#GROUND-BRAVE">Ground Brave Reasoning</a></dt></dl></dd><dt><a href="#CAUTIOUS">Cautious Reasoning</a></dt><dd><dl><dt><a href="#AEN1459">Ground Cautious Reasoning</a></dt></dl></dd><dt><a href="#DATALOG.QUERY">Plain Disjunctive Datalog</a></dt><dt><a href="#MAGIC.SETS">Dynamic Magic Sets</a></dt></dl></dd><dt>5. <a href="#AEN1540">Front-ends</a></dt><dd><dl><dt><a href="#AEN1566">Diagnosis Front-end</a></dt><dd><dl><dt><a href="#AEN1571">Restrictions</a></dt></dl></dd></dl></dd><dt>6. <a href="#SYNOPSIS">Synopsis</a></dt><dt>7. <a href="#AEN1835">Random tips / How to write <span class="PRODUCTNAME">DLV</span>
+    programs</a></dt><dt>8. <a href="#ODBC">ODBC interface (#import/#export Built-ins)</a></dt><dd><dl><dt><a href="#AEN1854">Introduction and Overview</a></dt><dt><a href="#ODBCSETUP">Example ODBC Setup</a></dt><dd><dl><dt><a href="#AEN1881">Creating user and table in MySQL</a></dt><dt><a href="#AEN1937">Set up unixODBC</a></dt></dl></dd><dt><a href="#AEN1978"><span class="PRODUCTNAME">DLV</span> and ODBC</a></dt><dd><dl><dt><a href="#AEN1983">The #import command</a></dt><dt><a href="#AEN2067">The #export command</a></dt></dl></dd><dt><a href="#AEN2173">Further examples with the ODBC Interface</a></dt></dl></dd><dt>9. <a href="#AEN2211">Technicalities</a></dt><dd><dl><dt><a href="#AEN2213">How does the system work?</a></dt><dt><a href="#AEN2216">Dynamic Body Reordering during Grounding</a></dt></dl></dd></dl></div><div class="LOT"><dl class="LOT"><dt><b>List of Tables</b></dt><dt>5-1. <a href="#AEN1545">Front-ends to <span class="PRODUCTNAME">DLV</span></a></dt><dt>5-2. <a href="#AEN1575">Theory restrictions in abductive diagnostic reasoning</a></dt><dt>5-3. <a href="#AEN1592">Theory restrictions in Reiter's diagnostic reasoning</a></dt><dt>6-1. <a href="#AEN1621">Front-end Options</a></dt><dt>6-2. <a href="#AEN1690">General Options</a></dt></dl></div><div class="LOT"><dl class="LOT"><dt><b>List of Examples</b></dt><dt>2-1. <a href="#AEN82">Simple terms:</a></dt><dt>2-2. <a href="#AEN114">Complex terms:</a></dt><dt>2-3. <a href="#AEN135">Predicates:</a></dt><dt>2-4. <a href="#AEN144">Atoms:</a></dt><dt>2-5. <a href="#AEN156">Literals:</a></dt><dt>2-6. <a href="#AEN165">Facts:</a></dt><dt>2-7. <a href="#AEN175">A program with comments</a></dt><dt>2-8. <a href="#AEN240">Rules:</a></dt><dt>2-9. <a href="#AEN250">Disjunctive facts:</a></dt><dt>2-10. <a href="#AEN258">Constraints:</a></dt><dt>2-11. <a href="#ANONYMOUS-EX">Using Anonymous Variables</a></dt><dt>2-12. <a href="#AEN420">True negation vs. negation as failure</a></dt><dt>2-13. <a href="#AEN438">Consistency criterion</a></dt><dt>2-14. <a href="#AEN460">Constraints and negation</a></dt><dt>2-15. <a href="#AEN488"></a></dt><dt>2-16. <a href="#MIN-SPANNING-TREE">Weak Constraints with weights only</a></dt><dt>2-17. <a href="#TEAM-BUILDING">Team Building with weights and priorities</a></dt><dt>2-18. <a href="#AEN561">Comparative predicates:</a></dt><dt>2-19. <a href="#AEN711">Arithmetic predicates:</a></dt><dt>2-20. <a href="#AEN881">List predicates:</a></dt><dt>2-21. <a href="#AEN942">Numeric named constant</a></dt><dt>2-22. <a href="#AEN949">Symbolic named constant</a></dt><dt>2-23. <a href="#AEN957">Assigning a named constant to a named constant</a></dt><dt>2-24. <a href="#AEN966">A weird example program</a></dt><dt>2-25. <a href="#AGGREGATE-EXAMPLE-1">Aggregate Predicates</a></dt><dt>2-26. <a href="#EXAMPLE-SYMBOLIC-SET-1">Symbolic Set Syntax</a></dt><dt>2-27. <a href="#EXAMPLE-SYMBOLIC-SET-2">Informal meaning of Symbolic Set</a></dt><dt>2-28. <a href="#EXAMPLE-AGGREGATE-FUNCTION">Informal Meaning of Aggregate Functions</a></dt><dt>2-29. <a href="#AEN1052">The Cartoons Co. Employees</a></dt><dt>2-30. <a href="#AEN1058">#count</a></dt><dt>2-31. <a href="#AEN1081">#sum</a></dt><dt>2-32. <a href="#AEN1107">#times</a></dt><dt>2-33. <a href="#AEN1110">#min</a></dt><dt>2-34. <a href="#AEN1117">#max</a></dt><dt>2-35. <a href="#MIN-SPANNING-TREE-AGGREGATES">Minimum Spanning Tree with Aggregates and Weak Constraints</a></dt><dt>2-36. <a href="#SEATING">The Seating Problem</a></dt><dt>3-1. <a href="#AEN1172">Safe Rules and Constraints</a></dt><dt>3-2. <a href="#AEN1181">Unsafe Rules and Constraints</a></dt><dt>3-3. <a href="#AEN1208">Safe Rules and Constraints</a></dt><dt>3-4. <a href="#AEN1216">Unsafe Rules and Constraints</a></dt><dt>3-5. <a href="#AEN1243">Not finite domain program</a></dt><dt>3-6. <a href="#AEN1253">Not finite domain program</a></dt><dt>3-7. <a href="#AEN1257">Finite domain program</a></dt><dt>3-8. <a href="#AEN1267">Program generating ever longer lists</a></dt><dt>3-9. <a href="#AEN1275">Lists growing both in length and in nesting</a></dt><dt>4-1. <a href="#AEN1291">Queries:</a></dt><dt>4-2. <a href="#QUERY-NONGROUND1">An example for non-ground brave reasoning</a></dt><dt>4-3. <a href="#QUERY-NONGROUND2">A query with multiple variable occurrences</a></dt><dt>4-4. <a href="#QUERY-NONGROUND3">A query with negation</a></dt><dt>4-5. <a href="#QUERY.TEST1">An example for succeeding ground brave reasoning</a></dt><dt>4-6. <a href="#AEN1407">Failing ground brave reasoning</a></dt><dt>4-7. <a href="#AEN1430">An example for non-ground cautious reasoning</a></dt><dt>4-8. <a href="#AEN1464">Succeeding ground cautious reasoning</a></dt><dt>4-9. <a href="#AEN1479">Failing ground cautious reasoning</a></dt><dt>4-10. <a href="#AEN1500">Succeeding cautious reasoning, if the program does not have any model</a></dt><dt>4-11. <a href="#AEN1515">Plain Disjunctive Datalog query</a></dt><dt>8-1. <a href="#AEN2041">Simple table import</a></dt><dt>8-2. <a href="#ODBCTRANSCLOSURE">Transitive closure on imported table</a></dt><dt>8-3. <a href="#AEN2102">Exporting a transitive closure</a></dt><dt>8-4. <a href="#AEN2175">Simple import</a></dt><dt>8-5. <a href="#AEN2185">3-coloring with tuple insertion</a></dt><dt>8-6. <a href="#AEN2195">3-coloring with tuple replacement</a></dt></dl></div><div class="PREFACE"><hr><h1><a name="AEN23"></a>Overview</h1><p>      <span class="PRODUCTNAME">DLV</span> is a deductive database system, based on
+      disjunctive logic programming, which offers front-ends to several
+      advanced KR formalisms.
+    </p><p>      More information (including an online version of this manual) and
+      executables for several platforms are available at <a href="http://www.dlvsystem.com/" target="_top">the
+      <span class="PRODUCTNAME">DLV</span> homepage
+      (http://www.dlvsystem.com/)</a>.
+    </p></div><div class="CHAPTER"><hr><h1><a name="AEN30"></a>Chapter 1. Getting Started</h1><p>      This is just a quick introduction to Disjunctive Datalog and
+      <span class="PRODUCTNAME">DLV</span>. For a more thorough and formal definition
+      refer to <a href="#DISJUNCTIVE.DATALOG">Chapter 2</a>.
+    </p><p>      You can invoke <span class="PRODUCTNAME">DLV</span> directly on the
+      command-line. If you do not specify any options or files,
+      <span class="PRODUCTNAME">DLV</span> will just print some informational
+      output:
+    </p><pre class="SCREEN">      <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV</kbd>
+      DLV [build BEN/May 23 2004   gcc 2.95.4 20011002 (Debian prerelease)]
+
+
+      usage: DLV {FRONTEND} {OPTIONS} [filename [filename [...]]]
+
+      Specify -help for more detailed usage information.
+
+    </pre><p>      The first line will most probably look different with your
+      installation. It first tells you which program this is, then it gives
+      information about the version. This consists of the identifier
+      <tt class="LITERAL">BEN</tt>, which stands for "benchmark version",
+      </p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>Versions other than <tt class="LITERAL">BEN</tt> should only be used
+        for development purposes!
+        </p></blockquote></div>
+      the date when the binary was built, and the identifier of the
+      compiler. Usually, you will not have to bother with these gory
+      details, but please include this information when you are reporting a
+      bug or asking for support.
+    <p></p><p>      If you do not want to see this status line, use the
+      <tt class="LITERAL">-silent</tt> option, which suppresses various
+      informational output and blank lines.
+    </p><pre class="SCREEN">      <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent</kbd>
+      usage: DLV {FRONTEND} {OPTIONS} [filename [filename [...]]]
+
+      Specify -help for more detailed usage information.
+
+    </pre><p>      From now on, all examples will include the <tt class="LITERAL">-silent</tt>
+      option.
+    </p><p>      Since we did not specify any input file, DLV just prints a brief
+      usage message. Let's try with an empty file.
+    </p><pre class="SCREEN">      <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent empty</kbd>
+      {}
+    </pre><p>      The "<tt class="LITERAL">{}</tt>", as noted above, tells you that the input
+      (no program, no database) admits the model in which nothing is true
+      (and as a matter of fact, in which nothing is false either in this
+      case).
+    </p><div class="CAUTION"><p></p><table class="CAUTION" width="100%" border="1"><tbody><tr><td align="CENTER"><b>Caution</b></td></tr><tr><td align="LEFT"><p>        It is very important to note the difference between an empty model
+        (as above) and no model: If a program has no model, it is
+        contradictory or inconsistent in some sense, while this is not the
+        case with an empty model.
+      </p></td></tr></tbody></table></div></div><div class="CHAPTER"><hr><h1><a name="DISJUNCTIVE.DATALOG"></a>Chapter 2. The Core Language of DLV: Disjunctive Datalog</h1><p>      <span class="PRODUCTNAME">DLV</span>'s native language is
+      <i class="FIRSTTERM">Disjunctive Datalog</i> extended with constraints, true
+      negation and queries.
+    </p><p>      The most basic elements of <i class="GLOSSTERM">Disjunctive Datalog</i>
+      are <i class="FIRSTTERM">constants</i>. They refer to entities, just as
+      objects which are stored in <i class="GLOSSTERM">relational
+      databases</i>. Constant names must begin with a lowercase 
+      letter and may be composed of letters, underscores and digits. 
+      Additionally, all numbers are <i class="GLOSSTERM">constants</i> as 
+      well. 
+      Note:
+      <tt class="LITERAL">not</tt> is a reserved word and not a valid constant.
+    </p><p>      Variables are placeholders for constants. Variable names must begin with
+      an uppercase letter and may contain letters, underscores and digits.
+    </p><p>      There is a special feature, which is called <span class="emphasis"><i class="EMPHASIS">anonymous
+      variable</i></span>. The anonymous variable is denoted by
+      "<tt class="LITERAL">_</tt>" (the underscore) and is different from a usual
+      variable as defined in the previous paragraph. Each occurrence of
+      <tt class="LITERAL">_</tt> represents a new and unique variable, which does
+      not occur anywhere else in the same rule resp. constraint. Anonymous
+      variables thus can be thought of as preprocessor statements which are
+      substituted by unique variable names (Actually this description is quite
+      close to what really happens internally). The purpose of this feature is
+      to specify that an argument can be ignored or does not matter in the
+      current rule resp. constraint without having to invent new and unique
+      variable names.
+    </p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>        Since anonymous variables represent unique variables, there is no
+        point of using them in the head of a rule or in a negative literal in
+        the body, because such rules cannot be safe (see <a href="#SAFETY">Chapter 3</a>).
+      </p></blockquote></div><p>      A term is either a simple term or a complex term.
+    </p><p>     A simple term is either a constant or a variable.
+    </p><div class="EXAMPLE"><a name="AEN82"></a><p><b>Example 2-1. Simple terms:</b></p><p>        <span class="emphasis"><i class="EMPHASIS">Constants:</i></span>
+        a1, 1, 9862, aBc1, c__
+      </p><p>        <span class="emphasis"><i class="EMPHASIS">Variables:</i></span>
+        A, V2f, Vi_X3
+      </p></div><p>      A complex term is either a funcional term or a list term.
+    </p><p>      A functional term is a function symbol followed by a parenthesized list
+      of terms. A function symbol must begin with a lowercase letter and may
+      be composed of letters, underscores and digits.
+    </p><p>      A list term can have the two following forms:
+      </p><p></p><table border="0"><tbody><tr><td>[<tt class="REPLACEABLE"><i>t1</i></tt>,... ,
+          <tt class="REPLACEABLE"><i>tn</i></tt>], i.e., a list of terms enclosed
+          in square brackets;</td></tr><tr><td>[<tt class="REPLACEABLE"><i>h</i></tt>|<tt class="REPLACEABLE"><i>t</i></tt>],
+          where <tt class="REPLACEABLE"><i>h</i></tt> (the head of the list) is a
+          term, and <tt class="REPLACEABLE"><i>t</i></tt> (the tail of the list)
+          is a list term (<span class="QUOTE">"a la Prolog"</span> syntax).</td></tr></tbody></table><p></p>
+    <p></p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>        Since the presence of complex terms could cause the derivation of
+        infinitely many new terms, programs including complex terms are
+        checked in order to verify if termination is a priori guaranteed (see
+        <a href="#SAFETY">Chapter 3</a>).
+      </p></blockquote></div><div class="EXAMPLE"><a name="AEN114"></a><p><b>Example 2-2. Complex terms:</b></p><p>        <span class="emphasis"><i class="EMPHASIS">Functional terms:</i></span>
+        f(1), g_1(a), fUN(1,a,f(5)), f(X), f(a,f(gibon(X),1,Y),Zulu)
+      </p><p>        <span class="emphasis"><i class="EMPHASIS">List terms:</i></span>
+        [a,[1,2],c,[2,3]], [1,f(1),2,f(a)], [], [1|[2,3]], [a|[b|[c]]], ["Zulu",[],f([])]
+      </p></div><p>      Predicates correspond to traditional relations.  Predicate symbols
+      begin with a letter and may contain letters, underscores and
+      digits. Again, <tt class="LITERAL">not</tt> is not a valid predicate.
+    </p><div class="EXAMPLE"><a name="AEN135"></a><p><b>Example 2-3. Predicates:</b></p>ord, oBp, r2D2, E_mc2</div><p>      An atom is a composition of a predicate symbol and some (possibly none)
+      terms. It is used to represent one or several (by using placeholders)
+      tuples in the relation identified by the predicate. An atom is denoted
+      by the predicate name, and if there are any terms involved they are
+      written between parentheses and separated by commata.
+    </p><p>      The number of terms which a predicate takes in an atom is referred to as
+      arity and must be constant for every predicate.
+    </p><div class="EXAMPLE"><a name="AEN144"></a><p><b>Example 2-4. Atoms:</b></p>a, b(8,K), weight(X,1,kg)</div><p>      A literal is a (possibly negated) atom. Unlike other systems,
+      <span class="PRODUCTNAME">DLV</span> supports two types of negation: True (or
+      explicit) negation (as defined by Gelfond and Lifschitz) and
+      negation-as-failure. True negation is written as <tt class="LITERAL">-</tt> or
+      <tt class="LITERAL">~</tt>, whereas the negation-as-failure symbol is
+      <tt class="LITERAL">not</tt>.
+    </p><p>      We refer to an atom which is possibly preceded by a true negation symbol
+      as explicitly negated literal. An explicitly negated literal which is
+      possibly preceded by the negation-as-failure symbol is simply termed
+      literal.
+    </p><div class="EXAMPLE"><a name="AEN156"></a><p><b>Example 2-5. Literals:</b></p><p></p><table border="0"><tbody><tr><td>-a</td></tr><tr><td>not ~b(8,K)</td></tr><tr><td>not weight(X,1,kg)</td></tr></tbody></table><p></p></div><p>      Note that an explicit negation symbol followed by the
+      negation-as-failure symbol is not valid syntax.
+    </p><p>      Facts are explicitly negated literals, which are asserted to be
+      true. Syntactically we denote this by adding a full-stop after the
+      explicitly negated literal. Note that facts may not contain variables
+      because of the safety criterion (see <a href="#SAFETY">Chapter 3</a>).
+    </p><div class="EXAMPLE"><a name="AEN165"></a><p><b>Example 2-6. Facts:</b></p><p></p><table border="0"><tbody><tr><td>weight(apple,100,gram).</td></tr><tr><td>-valid(1,equals,0).</td></tr></tbody></table><p></p></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN170">Comments</a></h2><p>        A <span class="PRODUCTNAME">DLV</span> program can be documented by
+        adding comments directly to the source.  Any line starting with
+        the "%" character, or anything between a "%" character (that
+        does not occur in a quoted string) and the end of the current
+        line is considered a comment and ignored by
+        <span class="PRODUCTNAME">DLV</span>.
+      </p><div class="EXAMPLE"><a name="AEN175"></a><p><b>Example 2-7. A program with comments</b></p><pre class="SCREEN">          % This line is a comment.
+          weight(apple,100,gram). % Here is a new comment, it ends in this row.
+        </pre></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN178">EDB - Extensional Database</a></h2><p>	Disjunctive Datalog combines databases and logic programming (hence the name!).
+	For this reason, <span class="PRODUCTNAME">DLV</span> can be seen as a logic
+	programming system or as a deductive database system. In order to be
+	consistent with deductive database terminology, the input is separated
+	into the extensional database (EDB), which is a collection of facts,
+	and the intensional database (IDB), which is used to deduce facts.
+      </p><p>       With <span class="PRODUCTNAME">DLV</span>, a way to specify such a
+       database is by providing facts in a file, but there is also the
+       possibility to import facts from a relational database,
+        through ODBC, as described in <a href="#ODBC">Chapter 8</a>.
+      </p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>	  <span class="PRODUCTNAME">DLV</span> does not require EDB and IDB to be
+	  stored in separate files. The same relation may even consist of both
+	  EDB and IDB parts. However, in general it is considered clean if EDB
+	  and IDB are separate. To make this separation explicit, we use
+	  distinct files for EDB and IDB in this chapter. The examples also
+	  work if the inputs are stored in only one file per example.
+	</p></blockquote></div><p>	The EDB may contain pure propositional knowledge, as in the following
+	example:
+      </p><pre class="SCREEN">	hot_furnace.
+	valve_closed.
+      </pre><p>	Assume that the above (which could be a very simplified description
+	of a steam engine) is stored in a file called
+	<tt class="FILENAME">engine</tt>.  Now let us see, what happens if we
+	call <span class="PRODUCTNAME">DLV</span> with this input:
+      </p><pre class="SCREEN">	<samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent engine</kbd>
+	{hot_furnace, valve_closed}
+      </pre><p>        As expected, the answer contains precisely the two assertions.
+        However, since the EDB is fixed knowledge, displaying it in the output
+        is often not desired (as it is redundant) or even counterproductive
+        since, for real applications, the EDB will be very large. Using the
+        <tt class="LITERAL">-nofacts</tt> option, predicates occurring only in the
+        EDB (that is, defined only by means of facts) will not be displayed.
+      </p><pre class="SCREEN">	<samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -nofacts engine</kbd>
+	{}
+      </pre><p>	Unlike in the previous example, the EDB may also contain facts which
+	look like standard relational tuples, rather than propositional atoms:
+      </p><pre class="SCREEN">	arc(a,b).
+	arc(b,c).
+	arc(b,d).
+      </pre><p>	<tt class="LITERAL">arc</tt> is called a <span class="emphasis"><i class="EMPHASIS">predicate
+	  symbol</i></span> or <span class="emphasis"><i class="EMPHASIS">relation symbol</i></span>, the parts
+	  within the parentheses are <span class="emphasis"><i class="EMPHASIS">constants</i></span>. These
+	  constants must begin with a lowercase letter and may contain letters
+	  (both upper- and lowercase), underscores and digits. Additionally,
+	  all non-negative integer numbers are constants, too.
+      </p><p>	The EDB above might encode a directed graph which looks like this:
+      </p><pre class="SCREEN">	      c
+	      ^
+	      |
+	a --&gt; b --&gt; d
+      </pre><p>	Again, since this is an EDB, a call to
+	<span class="PRODUCTNAME">DLV</span> with the file above (call it
+	<tt class="FILENAME">simple_graph</tt>) results in:
+      </p><pre class="SCREEN">	<samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent simple_graph</kbd>
+	{arc(a,b), arc(b,c), arc(b,d)}
+      </pre><p>	and
+      </p><pre class="SCREEN">        <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -nofacts simple_graph</kbd>
+        {}
+      </pre></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN220">IDB - Intensional Database</a></h2><p>	So far, we have shown how to specify a database serving as input (the
+	EDB). In this section we will show how to define knowledge which can
+	make use of these input databases.
+      </p><p>	This knowledge may depend on the EDB, or it may represent independent,
+	but indefinite knowledge, or both. Collectively, this part of the
+	input is termed <span class="emphasis"><i class="EMPHASIS">intensional database</i></span>
+	(<span class="emphasis"><i class="EMPHASIS">IDB</i></span>), or sometimes just
+	<span class="emphasis"><i class="EMPHASIS">program</i></span>.
+      </p><p>      Rules state relations between explicitly negated literals. Basically,
+      rules have the following form: <tt class="LITERAL">h1 v ... v hn :- b1, ...,
+      bm.</tt> <tt class="LITERAL">h1</tt> to <tt class="LITERAL">hn</tt> represent
+      explicitly negated literals, where <tt class="LITERAL">n &gt; 0</tt> (i.e. there
+      must be at least one of those). The <tt class="LITERAL">:-</tt> is the
+      transcription of an implication arrow and <tt class="LITERAL">b1, ..., bm</tt>
+      represent general literals, where <tt class="LITERAL">m &gt;= 0</tt> must hold
+      (i.e. the body may be omitted completely). The part before the
+      <tt class="LITERAL">:-</tt> is referred to as head, the part after
+      <tt class="LITERAL">:-</tt> as body. Note that negation-as-failure symbols may
+      occur in the body only. In addition, rules must be safe. For a
+      definition, we refer to <a href="#SAFETY">Chapter 3</a>.
+    </p><p>      Informally, if the body evaluates to true, the head must evaluate to
+      true as well. The negation-as-failure symbols can be read as
+      <span class="QUOTE">"there is no evidence that xxx evaluates to true"</span>, as in
+      default logic. The head represents a disjunction whereas the body
+      represents a conjunction.
+    </p><div class="EXAMPLE"><a name="AEN240"></a><p><b>Example 2-8. Rules:</b></p><p></p><table border="0"><tbody><tr><td>-ok :- not -hazard.</td></tr><tr><td>male(X) v female(X) :- person(X).</td></tr><tr><td>fruit(P) v vegetable(P) :- plant_food(P).</td></tr><tr><td>true v false :- .</td></tr><tr><td>employee(P) :- personnel_info(_,P,_,_,_).</td></tr></tbody></table><p></p></div><p>      Also note that facts can be viewed as special forms of rules, in which
+      the body is empty. The neutral element of conjunction is true, so facts
+      must always be true. We also allow disjunctive facts as a special case.
+      Note that due to the safety requirement (see <a href="#SAFETY">Chapter 3</a>),
+      no variables may occur in disjunctive facts.
+    </p><div class="EXAMPLE"><a name="AEN250"></a><p><b>Example 2-9. Disjunctive facts:</b></p><p></p><table border="0"><tbody><tr><td>true v false.</td></tr><tr><td>edible(apple) v foul(apple).</td></tr></tbody></table><p></p></div><p>      The other special form of a rule, in which the head is empty, is called
+      constraint. The neutral element of disjunction is falsity, so the body
+      of a constraint must not become true, because the head can never become
+      true.
+    </p><p>      These constructs can be used to constrain the worlds described by the
+      program, hence the name. Since constraints are special forms of rules,
+      they must meet the safety criterion (see <a href="#SAFETY">Chapter 3</a>).
+    </p><div class="EXAMPLE"><a name="AEN258"></a><p><b>Example 2-10. Constraints:</b></p><p></p><table border="0"><tbody><tr><td>:- color(apple,red), color(apple,green).</td></tr><tr><td>:- -healthy(X), not sick(X).</td></tr></tbody></table><p></p></div><p>      To summarise, a Disjunctive Datalog program consists of an arbitrary
+      number of facts, rules, and constraints.
+    </p><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN264">Definite Rules</a></h3><p>	  The simplest case is if the truth of some statement depends on the
+	  truth of some other statements. As an example, reconsider our EDB
+	  stored in the file <tt class="FILENAME">engine</tt>. Let us now define
+	  an IDB, which we will store in the file
+	  <tt class="FILENAME">alarm</tt>. It should specify that if the furnace
+	  is hot (<tt class="LITERAL">hot_furnace</tt> holds) and the pressure valve
+	  is closed (<tt class="LITERAL">valve_closed</tt> holds), then
+	  <tt class="LITERAL">alarm_on</tt> should hold.
+	</p><pre class="SCREEN">	  alarm_on :- hot_furnace, valve_closed.
+	</pre><p>	  This construct is called a <span class="emphasis"><i class="EMPHASIS">rule</i></span>. The
+	  <tt class="LITERAL">:-</tt> can be read as "if", and the comma can be
+	  considered as an "and". The part to the right of
+	  <tt class="LITERAL">:-</tt> is referred to as <span class="emphasis"><i class="EMPHASIS">body</i></span>,
+	  the left hand side is termed <span class="emphasis"><i class="EMPHASIS">head</i></span>.
+	</p><p>	  If we call <span class="PRODUCTNAME">DLV</span> on these two files, we see
+	  that <tt class="LITERAL">alarm_on</tt> is indeed derived:
+	</p><pre class="SCREEN">	  <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent engine alarm</kbd>
+	  {alarm_on}
+	</pre><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>	    The ordering of the parameters to <span class="PRODUCTNAME">DLV</span>
+	    does not matter. You can even specify the options at the end or
+	    mixed up with the files.
+	  </p></blockquote></div><p>	  Of course, we usually want to make more general statements,
+	  involving some kind of variables. For instance, we might want to
+	  define the notion of a path (i.e., there is a sequence of arcs from
+	  one node to a second node) on any graph which is defined by means of
+	  the <tt class="LITERAL">arc</tt> predicate. The following IDB does exactly
+	  that:
+	</p><pre class="SCREEN">	  path(X,Y) :- arc(X,Y).
+	  path(X,Y) :- path(X,Z), arc(Z,Y).
+	</pre><p>	  Note that <tt class="LITERAL">X</tt>, <tt class="LITERAL">Y</tt>, and
+	  <tt class="LITERAL">Z</tt> are <span class="emphasis"><i class="EMPHASIS">variables</i></span>. The name of
+	  a variable is a sequence of letters, underscores and digits,
+	  starting with an uppercase letter.  The name of a predicate can be
+	  any sequence of letters, underscores and digits, starting with a
+	  lowercase letter.
+	</p><p>	  So the program above says that there is a path from some
+	  <tt class="LITERAL">X</tt> to some <tt class="LITERAL">Y</tt>, if there is an
+	  arc from <tt class="LITERAL">X</tt> to <tt class="LITERAL">Y</tt>. The second
+	  rule is more difficult: It says that a path exists from
+	  <tt class="LITERAL">X</tt> to <tt class="LITERAL">Y</tt>, if there is a path
+	  from <tt class="LITERAL">X</tt> to some <tt class="LITERAL">Z</tt> (note that Z
+	  did not occur before in this rule) and there is an arc from this
+	  <tt class="LITERAL">Z</tt> to <tt class="LITERAL">Y</tt>.
+	</p><p>	  The second rule is worth looking at. The predicate
+	  <tt class="LITERAL">path</tt> occurs both in the head and in the body of
+	  the rule, so it seems that something is defined by itself which
+	  seems odd. However, this is a common feature in logic programming
+	  and is called <span class="emphasis"><i class="EMPHASIS">recursion</i></span>. You can think of it as
+	  assuming that <tt class="LITERAL">path</tt> is already completely defined,
+	  and specifying what conditions have to be met by the defined
+	  relation.
+	</p><p>	  Note that variables, which occur in the head, must also occur in the
+	  body. This is one of the safety requirements for rules (see <a href="#SAFETY">Chapter 3</a>).
+	</p><p>	  If we take this program (assume it is stored in a file called
+	  <tt class="FILENAME">path</tt> and apply it to the graph defined above,
+	  we see:
+	</p><pre class="SCREEN">	  <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -nofacts simple_graph path</kbd>
+	  {path(1,2), path(1,3), path(1,4), path(2,3), path(2,4)}
+	</pre><p>	  Indeed, this result corresponds to the paths in the graph.
+	</p><p>	  Sometimes a variable is used to mask an argument which is not used
+	  in the rest of the rule. For example, if you want to define a node
+	  in some graph (specified in the same format as above), you could
+	  write:
+	</p><pre class="SCREEN">	  node(X) :- arc(X,Y).
+	  node(Y) :- arc(X,Y).
+	</pre><p>	  In the first rule <tt class="LITERAL">Y</tt> is used to mask the second
+	  argument, in the second rule <tt class="LITERAL">X</tt> masks the first
+	  argument of <tt class="LITERAL">arc</tt>.
+	</p><p>	  <span class="PRODUCTNAME">DLV</span> provides a feature which saves us
+	  from the need to invent variable names for these masking variables
+	  and which clarifies to readers of programs that a variable is just
+	  used for masking. This feature is called <span class="emphasis"><i class="EMPHASIS">anonymous
+	  variable</i></span> and denoted as <tt class="LITERAL">_</tt> (an
+	  underscore). In spite of its name, an anonymous variable is not a
+	  variable as in the original description. Its meaning can be
+	  described as follows: In a preprocessing step, each occurrence of an
+	  anonymous variable is replaced by a unique variable (which does not
+	  occur anywhere else in the same rule resp. constraint).
+	</p><p>	  The previous example (defining a node) can thus be rewritten as
+	  follows:
+	</p><div class="EXAMPLE"><a name="ANONYMOUS-EX"></a><p><b>Example 2-11. Using Anonymous Variables</b></p><pre class="SCREEN">	    node(X) :- arc(X,_).
+	    node(Y) :- arc(_,Y).
+	  </pre></div></div><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN333">Disjunctive Rules</a></h3><p>	  The rules above described definite knowledge, but
+	  <span class="emphasis"><i class="EMPHASIS">Disjunctive Datalog</i></span> (the language we use here) also
+	  provides several ways to define indefinite knowledge.
+	</p><p>	  A simple case is the one, where we know for sure that at least one
+	  of two conditions is true, but we are unable to determine which. For
+	  example, if we notice that it is not dark in a room, we know that
+	  either the sun shines or that some artificial light is on, or even
+	  both:
+	</p><pre class="SCREEN">	  sunny v light_on.
+	</pre><p>	  The <tt class="LITERAL">v</tt> (alternate notions are <tt class="LITERAL">|</tt>
+	  and <tt class="LITERAL">;</tt>) indicates that this construct specifies
+	  disjunctive knowledge. Although the above may look similar to a
+	  simple fact, it is no definite knowledge and thus part of the IDB.
+	  Now let's see how <span class="PRODUCTNAME">DLV</span> acts on this input:
+	</p><pre class="SCREEN">	  <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent light</kbd>
+	  {sunny}
+	  {light_on}
+	</pre><p>	  For the first time, the output consists of more than one model. Now
+	  it is also clear what a model represents: It represents different
+	  worlds for which the program gives reason. But something seems to
+	  miss: What about the model, in which both <tt class="LITERAL">sunny</tt>
+	  and <tt class="LITERAL">light_on</tt> are true?
+	</p><p>	  Practically all semantics (definitions of the meaning of a program)
+	  have a minimality criterion. That means that if there are two
+	  potential models and one of them is a superset of the other, it
+	  should not be considered because it contains some redundant
+	  information. Since <tt class="LITERAL">{sunny, light_on}</tt> is a
+	  superset of both <tt class="LITERAL">{sunny}</tt> and
+	  <tt class="LITERAL">{light_on}</tt>, it is not considered a proper model.
+	</p><p>	  Note that because of this minimality criterion one disjunctive rule
+	  can give reason to exactly one of its atoms in the head. If several
+	  head atoms are true in one rule, there must be some other rules
+	  which require the truth of these additional true atoms.
+	</p><p>	  Another example: Say you want to find some node coloring of a graph,
+	  which is represented by <tt class="LITERAL">arc</tt>s. That is, we have
+	  several colors to choose from, say <tt class="LITERAL">red</tt>,
+	  <tt class="LITERAL">green</tt>, and <tt class="LITERAL">blue</tt> and every node
+	  should be assigned one color, but we do not know which one.
+	</p><p>	  To this end, we reuse the node definition of <a href="#ANONYMOUS-EX">Example 2-11</a>.
+	</p><p>	  The more interesting part is the last rule. Similar to the previous
+	  example, we specify that for any node <tt class="LITERAL">X</tt>, either
+	  <tt class="LITERAL">color(X,red)</tt>, <tt class="LITERAL">color(X,green)</tt>
+	  or <tt class="LITERAL">color(X,blue)</tt> must hold.  Here the minimality
+	  criterion ensures that exactly one color is assigned to a node.
+	</p><pre class="SCREEN">	  node(X) :- arc(X,_).
+	  node(Y) :- arc(_,Y).
+
+	  color(X,red) v color(X,green) v color(X,blue) :- node(X).
+	</pre><p>	  Let us view the output by <span class="PRODUCTNAME">DLV</span> for this
+	  example (file <tt class="FILENAME">coloring</tt>) on our example graph
+	  in <tt class="LITERAL">simple_graph</tt>:
+	</p><pre class="SCREEN">	  <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -nofacts coloring simple_graph</kbd>
+	  {node(1), node(2), node(3), node(4), color(1,red), color(2,red), color(3,red), color(4,red)}
+	  {node(1), node(2), node(3), node(4), color(1,red), color(2,red), color(3,red), color(4,green)}
+
+	  [... and so on ...]
+
+	  {node(1), node(2), node(3), node(4), color(1,blue), color(2,blue), color(3,blue), color(4,green)}
+	  {node(1), node(2), node(3), node(4), color(1,blue), color(2,blue), color(3,blue), color(4,blue)}
+	</pre></div><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN375">Negative Rules</a></h3><p>	  We have not yet introduced another important feature of Disjunctive Datalog:
+	  <span class="emphasis"><i class="EMPHASIS">negation</i></span>. Several proposals of what negation
+	  should mean in this context have been made.
+	  <span class="PRODUCTNAME">DLV</span> implements one of those, which has
+	  been widely accepted as a reasonable proposal: the <span class="emphasis"><i class="EMPHASIS">Stable
+	  Model Semantics</i></span>.
+	</p><p>	  Negation is treated as "negation as failure". In other words: If an
+	  atom is not true in some model, then its negation should be
+	  considered to be true in that model. We will not go into detail
+	  here, the examples should give you an idea how this works.
+	</p><p>	  With this mechanism we can, for example, define the complementary
+	  graph of a given graph. This is the graph which has the same nodes,
+	  but of all possible arcs, it has exactly those arcs which do not
+	  exist in the original graph.
+	</p><pre class="SCREEN">	  node(X) :- arc(X,_).
+	  node(Y) :- arc(_,Y).
+
+	  comparc(X,Y) :- node(X), node(Y), not arc(X,Y).
+	</pre><p>	  Here <tt class="LITERAL">comparc</tt> describes the set of arcs in the
+	  complementary graph. Such an arc must go from one node to another
+	  node (possibly the same one), and this arc must not be contained in
+	  the original arc set.
+	</p><p>	  Note that <tt class="LITERAL">node(X)</tt> and <tt class="LITERAL">node(Y)</tt>
+	  need to be included in the body in order to satisfy the following
+	  safety requirement for rules: Variables, which occur in a negated
+	  literal, must also occur in a positive literal in the body. See
+	  <a href="#SAFETY">Chapter 3</a>.
+	</p><pre class="SCREEN">	  <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -nofacts simple_graph compl_graph</kbd>
+
+	  {node(1), node(2), node(3), node(4), comparc(1,1), comparc(1,3), comparc(1,4), comparc(2,1), comparc(2,2), comparc(3,1), comparc(3,2), comparc(3,3), comparc(3,4), comparc(4,1), comparc(4,2), comparc(4,3), comparc(4,4)}
+	</pre><p>	  This was straightforward, but what if negation is used together with
+	  recursion? Let us look at a simple example:
+	</p><pre class="SCREEN">	  bad :- not bad.
+	</pre><p>	  Now let us assume a model in which <tt class="LITERAL">bad</tt> is true
+	  (in this case <tt class="LITERAL">{bad}</tt>: It is not a valid model,
+	  since the only way in which <tt class="LITERAL">bad</tt> could become true
+	  is by <tt class="LITERAL">not bad</tt> being true, which clearly is not
+	  the case. On the other hand, a model not containing
+	  <tt class="LITERAL">bad</tt> (here <tt class="LITERAL">{}</tt>), is not valid
+	  either, because in this case <tt class="LITERAL">not bad</tt> is true,
+	  hence <tt class="LITERAL">bad</tt> must be in the model, but it
+	  is not. Consequently, no model exists.
+	</p><pre class="SCREEN">	  <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent bad</kbd>
+	</pre><p>	  So in this case, there is no output at all, because as we have seen,
+	  the "empty model" <tt class="LITERAL">{}</tt> is not valid.
+	</p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>	    Although we did not give any example of this, negation may also
+	    occur in the body of disjunctive rules.
+	  </p></blockquote></div></div><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN411">True Negation</a></h3><p>          <span class="PRODUCTNAME">DLV</span> implements yet another notion of
+          negation: <span class="emphasis"><i class="EMPHASIS">true negation</i></span>.
+        </p><p>          Negation as failure, which has been introduced above, does not
+          support explicit assertion of falsity. Rather, if there is no
+          evidence that an atom is true, it is considered to be false.
+        </p><p>          There are several situations in which negation as failure is not
+          appropriate because it is necessary that something is explicitly
+          known to be false. For this reason, true negation is sometimes
+          referred to as <span class="emphasis"><i class="EMPHASIS">explicit negation</i></span>.
+        </p><p>          True negation is denoted by preceding an atom with "-" or "~".
+        </p><div class="EXAMPLE"><a name="AEN420"></a><p><b>Example 2-12. True negation vs. negation as failure</b></p><p>            Imagine a simple situation, in which an agent has to cross a
+            railroad. The agent should cross it if there is no train
+            approaching.
+          </p><p>            With this (sloppy) description, one might specify the following
+            program:
+          </p><pre class="SCREEN">            cross_railroad :- not train_approaches.
+          </pre><p>            Since there is no other information, <tt class="LITERAL">train_approaches</tt> does not
+            hold, and <tt class="LITERAL">cross_railroad</tt> is derived:
+          </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent rail_naf</kbd>
+            {cross_railroad}
+          </pre><p>            But this is a problem in that the specification should have read
+            "The agent should cross, if it is explicitly known that no
+            train approaches". The difference is how incomplete information is
+            handled. In the first case, information, whose truth value is
+            unknown, may be used for inference, in the second case this is
+            forbidden. So we utilise true negation:
+          </p><pre class="SCREEN">            cross_railroad :- -train_approaches.
+          </pre><p>            In this case, <tt class="LITERAL">-train_approaches</tt> can be
+            considered as a separate atom, and since there is no information
+            that it holds, cross_railroad cannot be derived.
+          </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent rail_true</kbd>
+            {}
+          </pre></div><div class="EXAMPLE"><a name="AEN438"></a><p><b>Example 2-13. Consistency criterion</b></p><p>            An atom and its explicitly negated counterpart may never occur in
+            the same model. In the literature, "models" of programs containing
+            true negation are called "answer sets". If atoms
+            <tt class="LITERAL">a</tt> and <tt class="LITERAL">-a</tt> occur in the same
+            answer set, it is inconsistent. An inconsistent answer set
+            contains all (possibly explicitly negated) literals of the
+            language. In our framework, inconsistent models do not exist.
+          </p><pre class="SCREEN">            a.
+            -a.
+          </pre><p>            This program has no model.
+          </p></div></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN445">Integrity Constraints</a></h2><p>	  Constraints in our framework specify conditions which must not
+	  become true in any model. In other words, constraints are
+	  formulations of possible inconsistencies. This mechanism is very
+	  useful in connection with disjunctive rules. The disjunctive rules
+	  serve as generators for different models and the constraints are
+	  used to select only the desired ones.
+	</p><p>	  The syntax of constraints is simple: They look like rules without
+	  heads. As with rules, constraints must meet the safety requirements
+	  (see <a href="#SAFETY">Chapter 3</a>).
+	</p><p>	  A very well-known problem is to find a coloring of a graph, such
+	  that no two adjacent nodes (i.e. two nodes which are connected by an
+	  arc) have the same color.
+	</p><p>	  To formulate this problem in Disjunctive Datalog, let us reconsider
+	  the coloring example from above:
+	</p><pre class="SCREEN">	  node(X) :- arc(X,_).
+	  node(Y) :- arc(_,Y).
+
+	  color(X,red) v color(X,green) v color(X,blue) :- node(X).
+	</pre><p>	  The models of this program (together with a database describing the
+	  graph) correspond to all possible colorings. We only need to add a
+	  constraint which discards colorings where two adjacent nodes have
+	  the same color:
+	</p><pre class="SCREEN">	  :- arc(X,Y), color(X,C), color(Y,C).
+	</pre><p>	  Assuming the combined code resides in 3col, the output then is:
+	</p><pre class="SCREEN">	  <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -nofacts simple_graph 3col</kbd>
+	  {node(1), node(2), node(3), node(4), color(1,red), color(2,green), color(3,red), color(4,red)}
+
+	  [... and so on ...]
+	  
+	  {node(1), node(2), node(3), node(4), color(1,blue), color(2,green), color(3,blue), color(4,red)}
+	  {node(1), node(2), node(3), node(4), color(1,blue), color(2,green), color(3,blue), color(4,blue)}
+	</pre><p>	  Note that this program yields 24 models, while the previous coloring
+	  example led to 81 models.
+	</p><div class="EXAMPLE"><a name="AEN460"></a><p><b>Example 2-14. Constraints and negation</b></p><p>            Of course, also negation can be used in constraints:
+          </p><pre class="SCREEN">            a v b.
+            :- not a.
+          </pre><p>            <tt class="LITERAL">{a}</tt> is a model of this program, but
+            <tt class="LITERAL">{b}</tt> is not, since the constraint would be
+            violated for <tt class="LITERAL">{b}</tt>.
+          </p><p>            As a comparison, a constraint with true negation:
+          </p><pre class="SCREEN">            a v b.
+            :- -a.
+          </pre><p>            Both <tt class="LITERAL">{a}</tt> and <tt class="LITERAL">{b}</tt> are models,
+            since <tt class="LITERAL">-a</tt> is not contained in any of these
+            models.
+          </p></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN474">Weak Constraints</a></h2><p>          This feature allows us to formulate several optimization problems in
+          an easy and natural way.  While standard constraints (integrity
+          constraints, strong constraints) <span class="emphasis"><i class="EMPHASIS">always</i></span> have to
+          be satisfied, weak constraints express desiderata, i.e., they should
+          be satisfied if it is possible, but their violation does not "kill"
+          the models.
+  	</p><p>          The answer sets of a program P with a set W of weak constraints are
+          those answer sets of P which minimize the number of violated weak
+          constraints. They are called Best Models of (P,W).  Note that a
+          program may have several best models (violating the same number of
+          weak constraints).
+	</p><p>          Weak constraints can be weighted according to their importance (the
+          higher the weight, the more important the constraint). In the
+          presence of weights, best models minimize the sum of the weights of
+          the violated weak constraints.  Weak constraints can also be
+          prioritized.  Under prioritization, the semantics minimizes the
+          violation of the constraints of the highest priority level first;
+          then the lower priority levels are considered one after the other in
+          descending order.
+	</p><p>          Syntactically, weak constraints are specified as follows.
+        </p><pre class="SCREEN">            :~ Conj. [Weight:Level]
+          </pre><p>          where <tt class="LITERAL">Conj</tt> is a conjunction of (possibly negated)
+          literals, and both <tt class="LITERAL">Weight</tt> and
+          <tt class="LITERAL">Level</tt> are positive integers.
+        </p><p>          Weights and priority levels are allowed to be variables, provided
+          that these variables also appear in a positive literal in
+          <tt class="LITERAL">Conj</tt>.  The user can omit the weight or the
+          priority or both, but all weak constraints must have the same
+          syntactic form (i.e., the user is free to specify only weights or
+          only priorities, or both, but all constraints of the program must
+          have the same syntactic form).
+	</p><div class="EXAMPLE"><a name="AEN488"></a><p><b>Example 2-15. </b></p><p>            Consider the following program stored in a file called
+            <tt class="FILENAME">example1</tt>.
+          </p><pre class="SCREEN">            a v b.
+            c :- b. 
+            :~ a.
+            :~ b.
+            :~ c.
+          </pre><p>            Since weights and priority levels are omitted, their values are
+            set to 1 by default.  If we feed this program into
+            <span class="PRODUCTNAME">DLV</span>, we obtain the following output:
+          </p><pre class="SCREEN">	    <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent example1</kbd>
+
+            Best Model: {a}
+            Cost ([Weight:Level]): &lt;[1:1]&gt;
+          </pre><p>            Note that the answer sets of <tt class="LITERAL">{ a v b.  c :- b. }
+            </tt> are <tt class="LITERAL">{a}</tt> and <tt class="LITERAL">{b,
+            c}</tt>.  The presence of weak constraints discards
+            <tt class="LITERAL">{b, c}</tt> because it violates two weak constraints
+            (while <tt class="LITERAL">{a}</tt> violates only one weak constraint).
+          </p></div><div class="EXAMPLE"><a name="MIN-SPANNING-TREE"></a><p><b>Example 2-16. Weak Constraints with weights only</b></p><p>            The following program, stored in a file called
+            <tt class="FILENAME">min_sp</tt>, computes the minimum spanning trees
+            of a weighed directed graph.
+          </p><pre class="SCREEN">            root(a).
+            node(a). node(b). node(c). node(d). node(e).
+            edge(a,b,4). edge(a,c,3). edge(c,b,2). edge(c,d,3). edge(b,e,4). edge(d,e,5).
+
+            in_tree(X,Y,C) v out_tree(X,Y) :- edge(X,Y,C), reached(X).
+            :- root(X), in_tree(_,X,C).
+            :- in_tree(X,Y,C), in_tree(Z,Y,C), X != Z.
+
+            reached(X):- root(X).
+            reached(Y):- reached(X), in_tree(X,Y,C).
+            :- node(X), not reached(X).
+
+            :~ in_tree(X,Y,C). [C:1]
+          </pre><p>            The output of this program is
+          </p><pre class="SCREEN">	    <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -nofacts min_sp_tree</kbd>
+
+            Best model: {reached(a), out_tree(a,b), in_tree(a,c,3), reached(b), reached(c), 
+            in_tree(b,e,4), in_tree(c,b,2), in_tree(c,d,3), reached(e), reached(d), 
+            out_tree(d,e)}
+            Cost ([Weight:Level]): &lt;[12:1]&gt;
+          </pre></div><p>          Finally, we show an example where both weights and priorities are
+          specified.
+        </p><div class="EXAMPLE"><a name="TEAM-BUILDING"></a><p><b>Example 2-17. Team Building with weights and priorities</b></p><p>            Consider the problem of assigning a given set of employees to
+            two projects. As a minor desideratum, we wish that members of 
+            the same group already know each other.
+          </p><p>            Higher level constraints ask each group to be heterogeneous as
+            far as skills are concerned, and require that people married 
+            with one another do not work in the same group.  We can define 
+            the following program in file called <tt class="FILENAME">plan</tt>.
+          </p><pre class="SCREEN">	    employee(a). employee(b). employee(c). employee(d). employee(e).
+            know(a,b). know(b,c). know(c,d). know(d,e).
+
+            same_skill(a,b).
+            married(c,d).
+
+            member(X,p1) v member(X,p2) :- employee(X).
+            :~ member(X,P), member(Y,P), X != Y, not know(X,Y). [1:1]
+            :~ member(X,P), member(Y,P), X != Y, married(X,Y). [1:2]
+            :~ member(X,P), member(Y,P), X != Y, same_skill(X,Y). [1:2]
+          </pre><p>            This program has two best models:
+          </p><pre class="SCREEN">	    <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV plan -silent -filter=member</kbd>
+
+            Best model: {member(a,p2), member(b,p1), member(c,p1), member(d,p2), member(e,p2)}
+            Cost ([Weight:Level]): &lt;[6:1],[0:2]&gt;
+            Best model: {member(a,p1), member(b,p2), member(c,p2), member(d,p1), member(e,p1)}
+            Cost ([Weight:Level]): &lt;[6:1],[0:2]&gt;
+          </pre></div><p>            If you specify the -costbound=<tt class="LITERAL">weight[,weight]</tt>
+            option on the command line, all of the models with a cost
+            less-or-equal than <tt class="LITERAL">costbound</tt> will be
+            computed. Note that not all of the computed models will be best
+            models.  You can associate a positive integer with each priority
+            level of <tt class="LITERAL">costbound</tt>.  If, instead of an integer,
+            <tt class="LITERAL">_</tt> is specified the corresponding weight is
+            unbound.
+
+            For instance, running <span class="PRODUCTNAME">DLV</span> with the
+            option
+           </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV take2.dl -costbound=5,10,_</kbd>
+            </pre><p>            sets up an upper bound for the cost of the computed models, where
+            the first two priority levels must have a value less-or-equal than
+            5 and 10, respectively, while the last one is unbound.  Note that
+            the rightmost weight is associated with the highest level. If you
+            specify fewer priority levels than occur in the input, only
+            weights corresponding to the lower priorities will set up the upper
+            bound of the cost, the remaining levels will be unbound. On the 
+            other hand, superfluous higher levels will be ignored.
+            </p><p>            For instance, running the following
+            command line for <a href="#MIN-SPANNING-TREE">Example 2-16</a> we will obtain the
+            following results
+           </p><pre class="SCREEN">           <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV min_sp_tree -silent -filter=member -costbound=13</kbd>
+           {in_tree(a,c), in_tree(c,b), in_tree(c,d), in_tree(d,e)}
+           Cost ([Weight:Level]): &lt;[13:1]&gt;
+           {in_tree(a,c), in_tree(b,e), in_tree(c,b), in_tree(c,d)}
+           Cost ([Weight:Level]): &lt;[12:1]&gt;
+           </pre><p>            If costbound is less than the cost of the best model(s), 
+            no model is output.
+          </p><p>            Note that the number of computed models can be limited also under 
+            option -costbound. For instance running 
+            </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV take2.dl -costbound=10 -n=1</kbd>
+            </pre>
+            asks for computing one model whose cost is at most 10.
+          <p></p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>            In presence of weak constraints adding the option -n=1 may speed up
+            the computation significantly in some cases.
+            Also the specification of a costbound may improve the efficiency.
+          </p></blockquote></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN546">Built-in predicates</a></h2><p>        In addition to those predicates defined by the user, some predicates
+        are already built into <span class="PRODUCTNAME">DLV</span> and available
+        for all programs. These predicates have names different from those
+        that can be defined by users and must not be redefined. An atom with
+        a built-in predicate is referred to as a built-in atom. Like ordinary
+        atoms, built-in atoms can be negated by using negation-as-failure.
+      </p><div class="SECT2"><hr><h3 class="SECT2"><a name="BUILTIN-COMPARATIVE">Comparative Predicates</a></h3><p>	  Constants can be compared by means of the built-in predicates
+	</p>&lt;, &gt;, &lt;=, &gt;=, = (with == as a deprecated alternative), !=<p>	  writable in normal prefix or infix notation. All kinds of constants
+	  (symbols and integers) may be compared against each other freely. If
+	  two integers are compared, the semantics are as expected.  All other
+	  comparisons are just guaranteed to impose a fixed ordering over all
+	  constants.
+	</p><div class="EXAMPLE"><a name="AEN561"></a><p><b>Example 2-18. Comparative predicates:</b></p><p></p><table border="0"><tbody><tr><td>in_range(X,A,B) :- X&gt;=A, &lt;(X,B).</td></tr><tr><td>pair(X,Y) :- Y&gt;X, color(X,green), color(Y,green).</td></tr></tbody></table><p></p></div><p>	  In the second example, <tt class="LITERAL">pair</tt> is guaranteed to
+	  define an asymmetric relation. I.e., if <tt class="LITERAL">pair(A,B)</tt>
+	  holds, <tt class="LITERAL">pair(B,A)</tt> does not. As a direct
+	  consequence, no <tt class="LITERAL">A</tt> exists, such that
+	  <tt class="LITERAL">pair(A,A)</tt> holds.
+	</p><p>	  All variables occurring in comparative predicates are required to satisfy
+	  a safety condition as reported in <a href="#SAFETY">Chapter 3</a>.
+	</p></div><div class="SECT2"><hr><h3 class="SECT2"><a name="BUILTIN-ARITHMETIC">Arithmetic Predicates</a></h3><p>	  Reasoning and computing over a finite set of integer ranges is
+	  possible with the predicates
+	</p>#int, #succ, #prec, #mod, #absdiff, #rand, +, *, -, /<p>            
+	  The unary version of the <tt class="LITERAL">#int</tt> builtin is only defined if an upper
+          integer limit <tt class="LITERAL">N</tt> is given
+	  on the command-line (with -N=<tt class="LITERAL">N</tt> - see <a href="#SYNOPSIS">Chapter 6</a>).
+	  Note that, such option limits the integers known by <span class="PRODUCTNAME">DLV</span>
+	  to the range <tt class="LITERAL">[0,N]</tt> and no arithmetic predicate
+	  will generate integers outside of the known range. If integer
+	  constants outside this range occur in the input, an error is
+	  issued.
+	</p><p></p><table border="0"><tbody><tr><td><tt class="LITERAL">#int(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>, <tt class="REPLACEABLE"><i>Z</i></tt>)</tt> is true, iff
+<tt class="LITERAL"><tt class="REPLACEABLE"><i>X</i></tt>&lt;=<tt class="REPLACEABLE"><i>Z</i></tt>&lt;=<tt class="REPLACEABLE"><i>Y</i></tt></tt> holds.</td></tr><tr><td><tt class="LITERAL">#int(<tt class="REPLACEABLE"><i>X</i></tt>)</tt> is true, iff <tt class="REPLACEABLE"><i>X</i></tt> is a
+known integer (i.e. <tt class="LITERAL">0&lt;=<tt class="REPLACEABLE"><i>X</i></tt>&lt;=N</tt>).</td></tr><tr><td><tt class="LITERAL">#succ(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>)</tt> is true, iff
+<tt class="REPLACEABLE"><i>X</i></tt>+1=<tt class="REPLACEABLE"><i>Y</i></tt> holds.</td></tr><tr><td><tt class="LITERAL">#prec(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>)</tt> is true, iff
+<tt class="REPLACEABLE"><i>X</i></tt>-1=<tt class="REPLACEABLE"><i>Y</i></tt> holds.</td></tr><tr><td><tt class="LITERAL">#mod(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>, <tt class="REPLACEABLE"><i>Z</i></tt>)</tt> is true,
+iff <tt class="REPLACEABLE"><i>X</i></tt>%<tt class="REPLACEABLE"><i>Y</i></tt>=<tt class="REPLACEABLE"><i>Z</i></tt> holds.</td></tr><tr><td><tt class="LITERAL">#absdiff(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>, <tt class="REPLACEABLE"><i>Z</i></tt>)</tt> is true,
+iff <tt class="LITERAL">abs(<tt class="REPLACEABLE"><i>X</i></tt>-<tt class="REPLACEABLE"><i>Y</i></tt>)</tt>=<tt class="REPLACEABLE"><i>Z</i></tt> holds.</td></tr><tr><td><tt class="LITERAL">#rand(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>, <tt class="REPLACEABLE"><i>Z</i></tt>)</tt> is true,
+iff <tt class="LITERAL"><tt class="REPLACEABLE"><i>Z</i></tt></tt> is a randomly generated integer such that 
+<tt class="LITERAL"><tt class="REPLACEABLE"><i>X</i></tt>&lt;=<tt class="REPLACEABLE"><i>Z</i></tt>&lt;=<tt class="REPLACEABLE"><i>Y</i></tt></tt> holds.</td></tr><tr><td><tt class="LITERAL">#rand(<tt class="REPLACEABLE"><i>X</i></tt>)</tt> is true,
+iff <tt class="LITERAL"><tt class="REPLACEABLE"><i>X</i></tt></tt> is a randomly generated integer such that 
+<tt class="LITERAL"><tt class="REPLACEABLE"><i>X</i></tt>&gt;=0</tt> and <tt class="LITERAL"><tt class="REPLACEABLE"><i>X</i></tt></tt> is not greater
+than the maximum value for integers.</td></tr><tr><td><tt class="LITERAL">+(<tt class="REPLACEABLE"><i>X</i></tt>,<tt class="REPLACEABLE"><i>Y</i></tt>,<tt class="REPLACEABLE"><i>Z</i></tt>)</tt>, or
+alternatively: <tt class="LITERAL"><tt class="REPLACEABLE"><i>Z</i></tt>=<tt class="REPLACEABLE"><i>X</i></tt>+<tt class="REPLACEABLE"><i>Y</i></tt></tt> is true, iff
+<tt class="REPLACEABLE"><i>Z</i></tt>=<tt class="REPLACEABLE"><i>X</i></tt>+<tt class="REPLACEABLE"><i>Y</i></tt> holds.</td></tr><tr><td><tt class="LITERAL">*(<tt class="REPLACEABLE"><i>X</i></tt>,<tt class="REPLACEABLE"><i>Y</i></tt>,<tt class="REPLACEABLE"><i>Z</i></tt>)</tt>, or
+alternatively: <tt class="LITERAL"><tt class="REPLACEABLE"><i>Z</i></tt>=<tt class="REPLACEABLE"><i>X</i></tt>*<tt class="REPLACEABLE"><i>Y</i></tt></tt> is true, iff
+<tt class="REPLACEABLE"><i>Z</i></tt>=<tt class="REPLACEABLE"><i>X</i></tt>*<tt class="REPLACEABLE"><i>Y</i></tt> holds.</td></tr><tr><td><tt class="LITERAL">-(<tt class="REPLACEABLE"><i>X</i></tt>,<tt class="REPLACEABLE"><i>Y</i></tt>,<tt class="REPLACEABLE"><i>Z</i></tt>)</tt>, or
+alternatively: <tt class="LITERAL"><tt class="REPLACEABLE"><i>Z</i></tt>=<tt class="REPLACEABLE"><i>X</i></tt>-<tt class="REPLACEABLE"><i>Y</i></tt></tt> is true, iff
+<tt class="REPLACEABLE"><i>Z</i></tt>=<tt class="REPLACEABLE"><i>X</i></tt>-<tt class="REPLACEABLE"><i>Y</i></tt> holds.</td></tr><tr><td><tt class="LITERAL">/(<tt class="REPLACEABLE"><i>X</i></tt>,<tt class="REPLACEABLE"><i>Y</i></tt>,<tt class="REPLACEABLE"><i>Z</i></tt>)</tt>, or
+alternatively: <tt class="LITERAL"><tt class="REPLACEABLE"><i>Z</i></tt>=<tt class="REPLACEABLE"><i>X</i></tt>/<tt class="REPLACEABLE"><i>Y</i></tt></tt> is true, iff
+<tt class="REPLACEABLE"><i>Z</i></tt>=<tt class="REPLACEABLE"><i>X</i></tt>/<tt class="REPLACEABLE"><i>Y</i></tt> holds.</td></tr></tbody></table><p></p><p>      Each arithmetic built-in has a number of input arguments and exactly
+      one output argument. The output argument is always the last one and its
+      value is computed from the values of input arguments. 
+    </p><p>      Input arguments are required to satisfy a safety condition as specified
+      in <a href="#SAFETY">Chapter 3</a>.
+    </p><div class="EXAMPLE"><a name="AEN711"></a><p><b>Example 2-19. Arithmetic predicates:</b></p><p></p><table border="0"><tbody><tr><td>fibonacci(N,F) :- #succ(N2,N1), #succ(N1,N),
+          fibonacci(N1,F1), fibonacci(N2,F2), +(F1,F2,F).</td></tr><tr><td>previousSec(Y) :- sec(X), #prec(X,Y).</td></tr><tr><td>even(X) :- #int(X), #mod(X,2,0).</td></tr><tr><td>odd(X) :- #int(X), not #mod(X,2,0).</td></tr><tr><td>weight(X,KG,kilogram) :- weight(X,G,gram), *(G,1000,KG).
+          </td></tr><tr><td>product(X) :- #int(P), #int(Q), X=P*Q.</td></tr><tr><td>productOfPrimes(X) :- #int(P), #int(Q), X=P*Q, P&gt;1,
+          Q&gt;1.</td></tr><tr><td>prime(A) :- #int(A), not productOfPrimes(A).</td></tr><tr><td>netWeight(X,N) :- fullweight(X,W), tare(X,T), N=W-T.</td></tr><tr><td>monthlyFee(Y) :- fee(X), Y=X/12.</td></tr><tr><td>sameDiagonal(X1,Y1,X2,Y2) :- cell(X1,Y1), cell(X2,Y2), 
+          X1!=X2, Y1!=Y2, #absdiff(X1,X2,D), #absdiff(Y1,Y2,D).</td></tr><tr><td>diceRoll(X) :- #rand(1,6,X).</td></tr></tbody></table><p></p></div><p>	  The following small example file
+	</p><pre class="SCREEN">	  number(X) :- #int(X). 
+	</pre><p>	  demonstrates the range of valid integers. It results in output like
+	  this:
+	</p><pre class="SCREEN">	  <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -N=5 number</kbd>
+	  {number(0), number(1), number(2), number(3), number(4), number(5)}
+	</pre><p>	  This example shows a use of <tt class="LITERAL">#succ</tt>:
+	</p><pre class="SCREEN">	  lessthan(A,B) :- #int(A), #succ(A,B).
+	  lessthan(A,C) :- lessthan(A,B), #succ(B,C). 
+	</pre><p>	  The output is as follows:
+	</p><pre class="SCREEN">	  <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -N=3 lessthan</kbd>
+	  {lessthan(0,1), lessthan(0,2), lessthan(0,3), lessthan(1,2),
+	   lessthan(1,3), lessthan(2,3)}
+	</pre></div><div class="SECT2"><hr><h3 class="SECT2"><a name="BUILTIN-LIST">List Predicates</a></h3><p>          A number of predicates are available for reasoning and computing
+          over list terms:
+        </p>#append, #delnth, #flatten, #getnth, #head, #insLast, #insnth, #last, #length, #member, #reverse, #subList, #tail<p>            
+          All list built-ins (except <tt class="LITERAL">#member</tt> and 
+          <tt class="LITERAL">#subList</tt>) have a number of input arguments and 
+          exactly one output argument. The output argument is always the last
+          one and its value is computed from the input arguments.
+          It must be either a variable or a constant term, i.e. it cannot be
+          a complex term that is not constant.
+          Built-ins <tt class="LITERAL">#member</tt> and <tt class="LITERAL">#subList</tt>
+          do not produce any output but just perform a check on their input
+          arguments.
+        </p><p></p><table border="0"><tbody><tr><td><tt class="LITERAL">#append(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>, <tt class="REPLACEABLE"><i>Z</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>Z</i></tt> is a list obtained by appending the elements
+                  of <tt class="REPLACEABLE"><i>Y</i></tt> to <tt class="REPLACEABLE"><i>X</i></tt>. <tt class="REPLACEABLE"><i>X</i></tt> and <tt class="REPLACEABLE"><i>Y</i></tt> must be list terms.
+          </td></tr><tr><td><tt class="LITERAL">#delnth(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>, <tt class="REPLACEABLE"><i>Z</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>Z</i></tt> is a list obtained from deleting the element
+                  of <tt class="REPLACEABLE"><i>X</i></tt> at position <tt class="REPLACEABLE"><i>Y</i></tt>. <tt class="REPLACEABLE"><i>X</i></tt> must be a list
+                  term and <tt class="REPLACEABLE"><i>Y</i></tt> must be a number referring to a valid position
+                  in <tt class="REPLACEABLE"><i>X</i></tt>.
+          </td></tr><tr><td><tt class="LITERAL">#flatten(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>Y</i></tt> is a list obtained from flattening <tt class="REPLACEABLE"><i>X</i></tt>.
+                  <tt class="REPLACEABLE"><i>X</i></tt> must be a list term.
+          </td></tr><tr><td><tt class="LITERAL">#getnth(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>, <tt class="REPLACEABLE"><i>Z</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>Z</i></tt> is the element at position <tt class="REPLACEABLE"><i>Y</i></tt>                  in the list <tt class="REPLACEABLE"><i>X</i></tt>. <tt class="REPLACEABLE"><i>X</i></tt> must be a list term and <tt class="REPLACEABLE"><i>Y</i></tt>
+                  must be a number referring to a valid position in <tt class="REPLACEABLE"><i>X</i></tt>.
+          </td></tr><tr><td><tt class="LITERAL">#head(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>Y</i></tt> is the first element of <tt class="REPLACEABLE"><i>X</i></tt>.
+                  <tt class="REPLACEABLE"><i>X</i></tt> must be a list term.
+          </td></tr><tr><td><tt class="LITERAL">#insLast(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>, <tt class="REPLACEABLE"><i>Z</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>Z</i></tt> is a list obtained by appending the term
+                  <tt class="REPLACEABLE"><i>Y</i></tt> to <tt class="REPLACEABLE"><i>X</i></tt>. <tt class="REPLACEABLE"><i>X</i></tt> must be a list
+                  term, <tt class="REPLACEABLE"><i>Y</i></tt> can be any term.
+          </td></tr><tr><td><tt class="LITERAL">#insnth(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>, <tt class="REPLACEABLE"><i>Z</i></tt>, <tt class="REPLACEABLE"><i>W</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>W</i></tt> is a list obtained by inserting the term
+                  <tt class="REPLACEABLE"><i>Y</i></tt> into <tt class="REPLACEABLE"><i>X</i></tt> at position <tt class="REPLACEABLE"><i>Z</i></tt>. <tt class="REPLACEABLE"><i>X</i></tt> must be a list
+                  term, <tt class="REPLACEABLE"><i>Y</i></tt> can be any term and <tt class="REPLACEABLE"><i>Z</i></tt>
+                  must be a number referring to a valid position in <tt class="REPLACEABLE"><i>X</i></tt>.
+          </td></tr><tr><td><tt class="LITERAL">#last(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>Y</i></tt> is the last element of <tt class="REPLACEABLE"><i>X</i></tt>.
+                  <tt class="REPLACEABLE"><i>X</i></tt> must be a list term.
+          </td></tr><tr><td><tt class="LITERAL">#length(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>Y</i></tt> is the size of <tt class="REPLACEABLE"><i>X</i></tt>.
+                  <tt class="REPLACEABLE"><i>X</i></tt> must be a list term.
+          </td></tr><tr><td><tt class="LITERAL">#member(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>X</i></tt> is a member of <tt class="REPLACEABLE"><i>Y</i></tt>.
+                  <tt class="REPLACEABLE"><i>X</i></tt> can be any term whereas <tt class="REPLACEABLE"><i>Y</i></tt> must be a list term.
+          </td></tr><tr><td><tt class="LITERAL">#reverse(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>Y</i></tt> is a list obtained from reversing <tt class="REPLACEABLE"><i>X</i></tt>.
+                  <tt class="REPLACEABLE"><i>X</i></tt> must be a list term.
+          </td></tr><tr><td><tt class="LITERAL">#subList(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>X</i></tt> is a sublist of <tt class="REPLACEABLE"><i>Y</i></tt>.
+                  <tt class="REPLACEABLE"><i>X</i></tt> and <tt class="REPLACEABLE"><i>Y</i></tt> must be list terms.
+          </td></tr><tr><td><tt class="LITERAL">#tail(<tt class="REPLACEABLE"><i>X</i></tt>, <tt class="REPLACEABLE"><i>Y</i></tt>)</tt> 
+                  is true iff <tt class="REPLACEABLE"><i>Y</i></tt> is the list containing all elements but
+                  the first of <tt class="REPLACEABLE"><i>X</i></tt>. <tt class="REPLACEABLE"><i>X</i></tt> must be a list term.
+          </td></tr></tbody></table><p></p><p>          List built-ins <tt class="LITERAL">#append</tt>, <tt class="LITERAL">#insLast</tt>
+          and <tt class="LITERAL">#insnth</tt> may cause the evaluation of a program
+          to not terminate because they could generate ever longer lists.
+          See section <a href="#SAFETY">Chapter 3</a> for further information.
+        </p><div class="EXAMPLE"><a name="AEN881"></a><p><b>Example 2-20. List predicates:</b></p><p></p><table border="0"><tbody><tr><td>newList(X) :- #append([a,b,c],[d,e],X).</td></tr><tr><td>newList(X) :- #delnth([a,b,c],1,X).</td></tr><tr><td>flattenedList(X) :- #flatten([a,b,[c,[d]]],X).</td></tr><tr><td>anElement(X) :- #getnth([a,b,c],2,X).</td></tr><tr><td>headElement(X) :- #head([a,b,c],X).</td></tr><tr><td>newList(X) :- #insLast([a,b,c],d,X).</td></tr><tr><td>newList(X) :- #insnth([a,b,c],d,4,X).</td></tr><tr><td>lastElement(X) :- #last([a,b,c],X).</td></tr><tr><td>size(X) :- #length([a,b,c],X).</td></tr><tr><td>yes :- #member(c,[a,b,c]).</td></tr><tr><td>reversedList(X) :- #reverse([a,b,c],X).</td></tr><tr><td>yes :- #subList([c],[a,b,c]).</td></tr><tr><td>tailList(X) :- #tail([a,b,c],X).</td></tr></tbody></table><p></p></div></div><div class="SECT2"><hr><h3 class="SECT2"><a name="BUILTIN-RANGES">Facts over a fixed Integer Range</a></h3><p>        As a shortcut for defining unary facts ranging over a
+        sequence of integer values you can use the following
+        syntax:
+      </p><pre class="SCREEN">        <tt class="REPLACEABLE"><i>pred</i></tt>(<tt class="REPLACEABLE"><i>X</i></tt>..<tt class="REPLACEABLE"><i>Y</i></tt>).
+      </pre><p> 
+          where <tt class="REPLACEABLE"><i>pred</i></tt> is a predicate name and 
+          <tt class="LITERAL"> <tt class="REPLACEABLE"><i>X</i></tt>,<tt class="REPLACEABLE"><i>Y</i></tt></tt> are
+        integers less or equal to the upper integer limit (as given on
+        the command-line with <tt class="LITERAL">-N</tt> - 
+         see <a href="#SYNOPSIS">Chapter 6</a>) and <tt class="LITERAL"><tt class="REPLACEABLE"><i>X</i></tt></tt>
+        should be less or equal than <tt class="LITERAL"><tt class="REPLACEABLE"><i>Y</i></tt></tt> (in order to 
+        produce any results).
+      </p><p>        For example:
+      </p><pre class="SCREEN">        weekday(1..7).
+      </pre><p>        is equivalent to adding the facts
+      </p><pre class="SCREEN">        weekday(1).
+        weekday(2).
+        weekday(3).
+        weekday(4).
+        weekday(5).
+        weekday(6).
+        weekday(7).
+      </pre></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="BUILTIN-CONSTANTS">Built-in constants</a></h2><p>	<tt class="LITERAL">#maxint</tt> equals the upper integer limit (as given on
+	the command-line with <tt class="LITERAL">-N</tt> - see <a href="#SYNOPSIS">Chapter 6</a>). Using <tt class="LITERAL">#maxint</tt> if there was no
+	integer range defined results in an error.
+      </p><p>        In addition to the command-line option <tt class="LITERAL">-N</tt>,
+        <tt class="LITERAL">#maxint</tt> can also be set directly in the input,
+        as in the following example.
+      </p><pre class="SCREEN">        #maxint=19.
+        bignumber(#maxint).
+      </pre></div><div class="SECT1"><hr><h2 class="SECT1"><a name="NAMED-CONSTANTS">Named constants</a></h2><p>        A name can be assigned to a constant. This can be useful when the
+        same constant is used many times in your program and you want to
+        change its value.
+      </p><p>        To define a new named constant use the following syntax:
+      </p><pre class="SCREEN">        #const <tt class="REPLACEABLE"><i>namedConstant</i></tt> = <tt class="REPLACEABLE"><i>constant</i></tt>.
+      </pre><p>        where <tt class="REPLACEABLE"><i>namedConstant</i></tt> is a constant name (it must begin with
+        a lowercase letter and may be composed of letters, underscores and digits) and
+        <tt class="REPLACEABLE"><i>constant</i></tt> is any legal constant term.
+        Following such a definition, all occurrences of
+        <tt class="REPLACEABLE"><i>namedConstant</i></tt> are replaced with
+        <tt class="REPLACEABLE"><i>constant</i></tt>. The definition of a new value for an already defined
+        named constant is not allowed.
+      </p><div class="EXAMPLE"><a name="AEN942"></a><p><b>Example 2-21. Numeric named constant</b></p><pre class="SCREEN">          #const rate = 5.
+          due(2). due(10).
+          pay(X) :- due(Y), X=Y*rate.
+        </pre><p>          The output is as follows:
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -N=50 numconst</kbd>
+          {due(2), due(10), pay(10), pay(50)}
+        </pre></div><div class="EXAMPLE"><a name="AEN949"></a><p><b>Example 2-22. Symbolic named constant</b></p><pre class="SCREEN">          #const nickname = mickey.
+          username(u1). username(u2).
+          user(X,nickname) :- username(X).
+        </pre><p>          The output is as follows:
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent symconst</kbd>
+          {username(u1), username(u2), user(u1,mickey), user(u2,mickey)}
+        </pre></div><p>        Note that a named constant appearing on the right side of a named constant
+        definition will be treated like a regular constant.
+      </p><div class="EXAMPLE"><a name="AEN957"></a><p><b>Example 2-23. Assigning a named constant to a named constant</b></p><p>          This example should clarify the previous note.
+        </p><pre class="SCREEN">          #const rate = 5.
+          #const new_rate = rate.
+          p(rate).
+          p(new_rate).
+        </pre><p>          The output is as follows:
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent remark1</kbd>
+          {p(5), p(rate)}
+        </pre></div><p>        It is explicitly forbidden to define a named constant, which has already
+        been used as a regular constant.
+      </p><div class="EXAMPLE"><a name="AEN966"></a><p><b>Example 2-24. A weird example program</b></p><pre class="SCREEN">          #const a = b.
+          #const b = a.
+          a(a).
+          b(b).
+        </pre><p>          The output is as follows:
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent remark2</kbd>
+          line 2: constant term 'b' already used.
+          Aborting due to parser errors.
+        </pre></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AGGREGATES">Aggregate Predicates</a></h2><p>        Aggregate predicates allow to express properties over a set of 
+        elements. They can occur in the bodies of rules and constraints,
+        possibly negated using negation-as-failure.
+        <span class="PRODUCTNAME">DLV</span> programs with
+        aggregates often allow clean and concise problem encodings by
+        minimizing the use of auxiliary predicates and recursive programs, 
+        and help the <span class="PRODUCTNAME">DLV</span> programmer to depict
+        problems in a more natural way.
+        From the point of efficiency, encodings using aggregates often
+        outperform those without, since the size of the ground instantiation
+        tends to be much smaller in this case.
+      </p><div class="EXAMPLE"><a name="AGGREGATE-EXAMPLE-1"></a><p><b>Example 2-25. Aggregate Predicates</b></p><pre class="SCREEN">          q :- 0 &lt;= #count{X,Y : a(X,Z,k),b(1,Z,Y)} &lt;= 3.
+          q(Z) :- 2 &lt; #sum{V : d(V,Z)}, c(Z).
+          p(W) :- #min{S : c(S)} = W.
+          :- #max{V : d(V,Z)} &gt; G, c(G).
+        </pre></div><p> 
+        Using the example above we introduce the main features of the
+        aggregate predicates: 
+      </p><p>        The sets appearing in curly braces are called 
+        <span class="emphasis"><i class="EMPHASIS">Symbolic Sets</i></span>.
+      </p><p>        <tt class="LITERAL">#count</tt>, <tt class="LITERAL">#sum</tt>, 
+        <tt class="LITERAL">#times</tt>, <tt class="LITERAL">#min</tt>, 
+        and <tt class="LITERAL">#max</tt> are called 
+        <span class="emphasis"><i class="EMPHASIS">aggregate functions</i></span>, and
+        <span class="PRODUCTNAME">DLV</span> currently supports
+         exactly these five.
+        
+        
+          
+          
+          
+          
+          
+          
+        
+        An aggregate function is applied over a set and returns 
+        a numeric value.
+      </p><p>        The terms <tt class="LITERAL">0</tt>, <tt class="LITERAL">2</tt>,
+        <tt class="LITERAL">3</tt>, <tt class="LITERAL">G</tt>, <tt class="LITERAL">W</tt> 
+        are called <span class="emphasis"><i class="EMPHASIS">guards</i></span>.
+      </p><p>        Guards can be numbers or variables. They provide a range to compare
+        the value returned by the aggregate function. If the value is in the
+        range then the aggregate predicate is true, it is false otherwise.
+        Moreover an aggregate predicate is false if a guard is a variable
+        instantiated with a non numerical value.
+      </p><p>        The term <tt class="LITERAL">W</tt> above is an <span class="emphasis"><i class="EMPHASIS">assignment
+        guard</i></span> which assigns the value returned by the aggregate
+        function to a variable.
+        If the guard is an assignment, the aggregate is always true.
+      </p><p> 
+        In the next sections we provide details on syntax and informal meaning
+        of the aggregate predicates features. Moreover we show several examples
+        of program encodings, and finally we present two problems from AI
+        encoded with aggregates.
+      </p><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN1004">Symbolic Sets</a></h3><p>          The syntax of a <span class="emphasis"><i class="EMPHASIS">Symbolic Set</i></span> is
+          </p><pre class="SCREEN">            {Vars : Conj}
+          </pre>
+          where <span class="emphasis"><i class="EMPHASIS">Vars</i></span> is a list of
+          <span class="emphasis"><i class="EMPHASIS">local</i></span> variables (see below), and
+          <span class="emphasis"><i class="EMPHASIS">Conj</i></span> is a conjunction of (non-aggregate)
+          literals.
+        <p></p><p>          The following is an example of a symbolic set occurring in an 
+          aggregate.
+          </p><div class="EXAMPLE"><a name="EXAMPLE-SYMBOLIC-SET-1"></a><p><b>Example 2-26. Symbolic Set Syntax</b></p><pre class="SCREEN">              q(Z) :- 1 &lt; #count{X : a(X,Y,Z), not d(2,Y,goofie)}, c(Z).
+            </pre></div>
+          Variable <tt class="LITERAL">X</tt> is <span class="emphasis"><i class="EMPHASIS">local</i></span>, 
+          i.e. it occurs in at least one literal of Conj, and does not appear
+          anywhere outside of the symbolic set (note that it can not occur in
+          any other symbolic set defined in the same rule).
+          Literals of Conj can contain constants, local variables, and 
+          <span class="emphasis"><i class="EMPHASIS">global</i></span> variables (i.e. variables also
+          appearing outside the symbolic set).
+          In the example <a href="#EXAMPLE-SYMBOLIC-SET-1">Example 2-26</a> Vars
+          consists of the local variable <tt class="LITERAL">X</tt>.
+          <tt class="LITERAL">Y</tt> is also a local variable, while
+          <tt class="LITERAL">Z</tt> is a global variable. Finally,
+          <tt class="LITERAL">2</tt> and <tt class="LITERAL">goofie</tt> are constants.
+          We will further discuss safety of variables occurring in a 
+          symbolic set in <a href="#SAFETY">Chapter 3</a>.
+        <p></p><div class="EXAMPLE"><a name="EXAMPLE-SYMBOLIC-SET-2"></a><p><b>Example 2-27. Informal meaning of Symbolic Set</b></p><p>            Consider the following symbolic set
+          </p><p></p><table border="0"><tbody><tr><td>{V : d(V,3)}</td></tr></tbody></table><p></p><p>            The ground instantiation of this symbolic set consists of pairs
+            <tt class="LITERAL">V,d(V,3)</tt> such that <tt class="LITERAL">d(V,3)</tt> is
+            true w.r.t. the current interpretation.
+          </p><p>            Given an interpretation
+            </p><pre class="SCREEN">              I = {d(1,1), d(1,3), d(3,3)}
+            </pre>
+            the true instances of d(V,3) w.r.t. I are
+            <p></p><table border="0"><tbody><tr><td>d(1,3)</td></tr><tr><td>d(3,3)</td></tr></tbody></table><p></p>
+            hence the symbolic set is given by
+            <pre class="SCREEN">              S = {&lt;1,d(1,3)&gt;, &lt;3,d(3,3)&gt;}
+            </pre>
+          <p></p></div></div><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN1040">Aggregate Functions</a></h3><p>          An aggregate function applies to the symbolic set, and returns 
+          a number.
+        </p><div class="EXAMPLE"><a name="EXAMPLE-AGGREGATE-FUNCTION"></a><p><b>Example 2-28. Informal Meaning of Aggregate Functions</b></p><p>            The aggregate function #count returns the 
+            cardinality of the symbolic set to which is applied.
+            If we apply #count to the symbolic set from
+            example <a href="#EXAMPLE-SYMBOLIC-SET-2">Example 2-27</a>
+            w.r.t. interpretation I.
+          </p><pre class="SCREEN">            #count{&lt;1,d(1,3)&gt;, &lt;3,d(3,3)&gt;}
+          </pre><p>            the returned value is <tt class="LITERAL">2</tt>.
+          </p></div><p>            In the following we show syntax and informal meaning of all the
+            aggregate functions supported by <span class="PRODUCTNAME">DLV</span>
+            by examples. In order to do that, we introduce the following EDB
+            representing the employees of a company.
+        </p><div class="EXAMPLE"><a name="AEN1052"></a><p><b>Example 2-29. The Cartoons Co. Employees</b></p><p>            Each employee is is represented by a fact of the form
+            <tt class="LITERAL">emp(ID,NAME,SALARY)</tt> which we store in a file
+            called <tt class="FILENAME">employees</tt>.
+          </p><pre class="SCREEN">            emp(1,goofie,1250).
+            emp(2,willy,700).
+            emp(3,woody,750).
+            emp(4,jerry,900).
+            emp(5,tom,1050).
+          </pre></div><div class="EXAMPLE"><a name="AEN1058"></a><p><b>Example 2-30. #count</b></p><p>            Aggregate function #count returns the cardinality of the symbolic
+            set to which it is applied.
+          </p><p>            We want to count how many employees of the company earn more than 
+            1000. The program is stored in a file called
+            <tt class="FILENAME">query1.dl</tt>.
+          </p><pre class="SCREEN">            over1000(I,S) :- emp(I,N,S), S &gt; 1000.
+            over1000nr(X) :- #count{I : over1000(I,W)} = X.
+          </pre><p>            Intuitively the symbolic set appearing in the aggregate predicate
+            consists of two ground predicates
+          </p><pre class="SCREEN">             {&lt;1,over1000(1,1250)&gt;,&lt;5,over1000(5,1050)&gt;}
+          </pre><p>            which are both true w.r.t. the unique model of the whole program,
+            hence
+          </p><pre class="SCREEN">            #count{over1000(1,1250),over1000(5,1050)}
+          </pre><p>            returns <tt class="LITERAL">2</tt>, and the output is
+          </p><p>            </p><pre class="SCREEN">              <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -nofacts employees query1.dl</kbd>
+              {over1000(1,1250), over1000(5,1050), over1000nr(2)}
+            </pre> 
+          <p></p><p>            </p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>                Please note that we can also rewrite the program omitting the
+                first rule and changing the second one as follows:
+              </p><pre class="SCREEN">                over1000nr(X) :- #count{I : emp(I,N,S),S&gt;1000} = X.
+              </pre></blockquote></div>
+          <p></p><p>            To check whether there is any employee earning more than 1200,
+            we can write the following program stored in a file named
+            <tt class="FILENAME">query2.dl</tt>
+          </p><pre class="SCREEN">            warnMeOver1200 :- #count{I : emp(I,N,S), S &gt; 1200} &gt; 0.
+          </pre></div><div class="EXAMPLE"><a name="AEN1081"></a><p><b>Example 2-31. #sum</b></p><p>          #sum returns the sum of the first local variable to be
+          aggregated over in the symbolic set.
+          </p><p>            Suppose we want to know how much Cartoon Co. spends on salaries.
+            This can be easily implemented using the following program
+            <tt class="FILENAME">query3.dl</tt>.
+          </p><pre class="SCREEN">            salaryTotal(X) :- #sum{S,I : emp(I,N,S)} = X.
+          </pre><p>            The symbolic set here consists of 5 elements, namely all of the
+            facts stored in the database of the employees.
+            The aggregate function applied to the given set returns
+            the sum of the salaries of all the employees, the output thus is:
+            </p><pre class="SCREEN">              <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -nofacts employees query3.dl</kbd>
+              {salaryTotal(4650)}
+            </pre>
+          <p></p><p>            </p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>                The sum is formed only over <tt class="REPLACEABLE"><i>S</i></tt>, the
+                first variable in the set, while the specification of
+                <tt class="REPLACEABLE"><i>I</i></tt> is necessary to guarantee that
+                one value per employee is summed. If only
+                <tt class="REPLACEABLE"><i>S</i></tt> was specified, then if two
+                distinct employees earn the same amount of value, this amount
+                would be summed only once instead of twice.
+              </p><p>                If we look only at the projection on
+                <tt class="REPLACEABLE"><i>S</i></tt>, then specifying
+                <tt class="REPLACEABLE"><i>S</i></tt> represents the set of values for
+                <tt class="REPLACEABLE"><i>S</i></tt>, for which
+                <tt class="LITERAL">emp(I,N,S)</tt> holds, while specifying
+                <tt class="REPLACEABLE"><i>S,I</i></tt> represents the multiset of
+                values for <tt class="REPLACEABLE"><i>S</i></tt>, for which
+                <tt class="LITERAL">emp(I,N,S)</tt> holds.
+              </p></blockquote></div>
+          <p></p><p>            To check whether the expenses for salaries exceed 4500, we can
+            use the following simple program:
+          </p><pre class="SCREEN">            warning :- #sum{S,I : emp(I,N,S)} &gt; 4500.
+          </pre></div><div class="EXAMPLE"><a name="AEN1107"></a><p><b>Example 2-32. #times</b></p><p>          #times is similar to #sum, but computes the product of
+          the first local variable to be aggregated over in the 
+          symbolic set. 
+          When applied over the empty set, #times returns 1.
+          </p></div><div class="EXAMPLE"><a name="AEN1110"></a><p><b>Example 2-33. #min</b></p><p>#min returns the minimum value of the first local 
+          variable to be aggregated over in the symbolic set.
+          </p><p>            The following simple program then returns the lowest income among
+            all employees.
+          </p><pre class="SCREEN">            lowest(X) :- #min{S : emp(I,N,S)} = X.
+          </pre><p>            To perform the same query without aggregate predicates we would
+            need to write the following program consisting of the query plus
+            an auxiliary rule which is by far less elegant.
+          </p><pre class="SCREEN">            lowest(X) :- emp(_,_,X), not existsLowerThan(X).
+            existsLowerThan(W) :- emp(_,_,W), emp(_,_,W1), W1 &lt; W.
+          </pre></div><div class="EXAMPLE"><a name="AEN1117"></a><p><b>Example 2-34. #max</b></p><p>#max returns the maximum value of the first local 
+          variable to be aggregated over in the symbolic set.
+          </p><p>            The following program computes the maximum income 
+            earned in the company
+          </p><pre class="SCREEN">            highest(X) :- #max{S : emp(I,N,S)} = X.
+          </pre><p>             Running this program with <span class="PRODUCTNAME">DLV</span>
+             generates the following output:
+          </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -nofacts employees query6.dl</kbd>
+              {highest(1250)}
+          </pre></div></div><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN1127">Knowledge Representation Using Aggregate Predicates</a></h3><p>          In the following we present several examples of well-known problems 
+          in the field of Artificial Intelligence which can be represented 
+          in a very elegant and readable way by means of aggregates.
+        </p><div class="EXAMPLE"><a name="MIN-SPANNING-TREE-AGGREGATES"></a><p><b>Example 2-35. Minimum Spanning Tree with Aggregates and Weak Constraints</b></p><p>            The following program is an alternate version of the program 
+            <a href="#MIN-SPANNING-TREE">Example 2-16</a>, where integrity constraints
+            are rewritten by using aggregates.
+          </p><p>            The strong constraint
+            </p><pre class="SCREEN">              :- root(X), in_tree(_,X,C).
+            </pre>
+            ensuring that "the root of a tree should not have any incoming arc"
+            can be rewritten as follows
+          <pre class="SCREEN">            :- root(R), not #count{X : in_tree(X,R,C)} = 0.
+          </pre>
+            The constraint
+          <pre class="SCREEN">            :- in_tree(X,Y,C), in_tree(Z,Y,C), X != Z.
+          </pre>
+            ensuring that "each node in the tree must have only one incoming
+            arc" can be rewritten as
+          <pre class="SCREEN">            :- edge(_,Y,_), not #count{X : in_tree(X,Y,_)} = 1.
+          </pre>
+            Please note that the previous definition ensures also that "each 
+            node in the graph should be reached (i.e. must belong to the 
+            spanning tree)", hence in this version of the program the following
+            part 
+          <pre class="SCREEN">            reached(X) :- root(X).
+            reached(Y) :- reached(X), in_tree(X,Y).
+            :- node(X), not reached(X).
+          </pre>
+            is redundant, and can be omitted. Thus the rewritten IDB 
+            of the program appears as follows
+          <pre class="SCREEN">            in_tree(X,Y,C) v out_tree(X,Y) :- edge(X,Y,C).
+
+            :- root(R), not #count{X : in_tree(X,R,C)} = 0. 
+            :- edge(_,Y,_), not #count{X : in_tree(X,Y,_)} = 1.
+ 
+            :~ in_tree(X,Y,C). [C:1]
+          </pre>
+            Comparing this encoding with the one from <a href="#MIN-SPANNING-TREE">Example 2-16</a>, we obtain improved readability
+            (aggregates are more meaningful also to entry-level users) and
+            more elegant definitions (without auxiliary rules.).
+          <p></p></div><div class="EXAMPLE"><a name="SEATING"></a><p><b>Example 2-36. The Seating Problem</b></p><p>            Assume we store facts specifying a set of 24 persons and facts
+            defining whether couples of people like or dislike each other
+            in a file called <tt class="FILENAME">rel</tt>:
+            </p><pre class="SCREEN">              npersons(24).  % number of people
+              #maxint = 24.  % number of people
+              person(K1):- #int(K1),  K1 &gt; 0, K1 &lt;= K, npersons(K).
+
+              like(1,2).
+              dislike(2,3).
+              ...
+            </pre>
+            Furthermore, assume we have another file called 
+            <tt class="FILENAME">restaurant</tt> which specifies the
+            number of tables and the number of seats for each table of a
+            restaurant:
+            <pre class="SCREEN">              ntables(3).    % number of tables
+              nchairs(8).    % number of chairs            
+            </pre>
+            Consider the problem of assigning seats to the set of people.
+            Each person should be assigned to a seat S of a table T,
+            where she she will meet only people she likes and nobody she 
+            dislikes.
+
+            We can encode this problem by means of aggregates.
+            <pre class="SCREEN">              %  Guess if person P sits at table T or not.
+              at(P,T) v not_at(P,T) :- person(P), table(T).
+
+              %  The number of persons at a table T must not exceed the number of chairs.
+              :- table(T), nchairs(C), not #count { P: at(P,T) } &lt;= C.
+
+              %  A person is seated at precisely one table.
+              :- person(P), not #count{T : at(P,T)} = 1.
+
+              %  People who like each other should sit at the same table.
+              :- like(P1,P2), at(P1,T), not at(P2,T).
+
+              %  People who dislike each other must not sit at the same table.
+              :- dislike(P1,P2), at(P1,T), at(P2,T).
+            </pre>
+          <p></p></div></div></div></div><div class="CHAPTER"><hr><h1><a name="SAFETY"></a>Chapter 3. Safety</h1><p>      <span class="PRODUCTNAME">DLV</span> imposes a safety condition on
+      variables in rules.  This guarantees that a rule is logically
+      equivalent to the set of its Herbrand instances.
+    </p><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN1154">Standard, Arithmetic and Comparative Predicates</a></h2><p>        A variable <tt class="LITERAL">X</tt> in an aggregate-free rule is safe if
+        at least one of the following conditions is satisfied:
+        </p><p></p><ul><li><p>            <tt class="LITERAL">X</tt> occurs in a positive standard predicate in
+              the body of the rule;
+          </p></li><li><p>            <tt class="LITERAL">X</tt> occurs in a true negated standard predicate
+              in the body of the rule;
+          </p></li><li><p>            <tt class="LITERAL">X</tt> occurs in the last argument of an arithmetic
+              predicate <tt class="LITERAL">A</tt> and all other arguments of
+              <tt class="LITERAL">A</tt> are safe.
+          </p></li></ul>        
+      <p></p><p>        A rule is safe if all its variables are safe. However, cyclic
+        dependencies are disallowed, e.g.,
+        <tt class="LITERAL">:- #succ(X,Y), #succ(Y,X)</tt> is not safe.
+      </p><div class="EXAMPLE"><a name="AEN1172"></a><p><b>Example 3-1. Safe Rules and Constraints</b></p><p></p><table border="0"><tbody><tr><td>a(X) :- not b(X), c(X).</td></tr><tr><td>a(X) :- X &gt; Y, node(X), node(Y).</td></tr><tr><td>a(Y) :- number(X), #prec(X,Y).</td></tr><tr><td>a(Z) :- number(X), #succ(X,Y), Z=X+Y.</td></tr><tr><td>:- number(X), number(Y), #mod(X,Y,2).</td></tr><tr><td>:- -a(Y), not b(Y), not c(Y).</td></tr></tbody></table><p></p></div><div class="EXAMPLE"><a name="AEN1181"></a><p><b>Example 3-2. Unsafe Rules and Constraints</b></p><p></p><table border="0"><tbody><tr><td>a(X) v -a(X).</td></tr><tr><td>a(X) :- not b(X).</td></tr><tr><td>a(X) :- number(Y), X=Y*Z.</td></tr><tr><td>a(X) :- number(Y), #succ(X,Y).</td></tr><tr><td>:- not number(X), #succ(X,Y).</td></tr><tr><td>:- not -b(Y).</td></tr><tr><td>:- X &lt;= Y, node(X).</td></tr></tbody></table><p></p></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN1191">Aggregates</a></h2><p>        A variable <tt class="LITERAL">X</tt> appearing in the symbolic set of an
+        aggregate is safe if it does not appear elsewhere outside the
+        aggregate atom and at least one of the following conditions is
+        satisfied:
+        </p><p></p><ul><li><p>            <tt class="LITERAL">X</tt> occurs in a positive standard predicate
+            in the symbolic set;
+          </p></li><li><p>            <tt class="LITERAL">X</tt> occurs in a true negated standard predicate
+            in the symbolic set;
+          </p></li><li><p>            <tt class="LITERAL">X</tt> occurs in the last argument of an
+            arithmetic predicate <tt class="LITERAL">A</tt> in the symbolic
+            set and all other arguments of <tt class="LITERAL">A</tt> are safe.
+          </p></li></ul>        
+      <p></p><p>        All other variables (including guards) appearing in an aggregate atom
+        have to be made safe by some other literal of the body.
+      </p><div class="EXAMPLE"><a name="AEN1208"></a><p><b>Example 3-3. Safe Rules and Constraints</b></p><p></p><table border="0"><tbody><tr><td>a(X) :- node(X), #count{V : edge(V,X)} &gt;0.</td></tr><tr><td>a(X) :- node(X), not #count{V : edge(V,X)} =0.</td></tr><tr><td>a(X) :- #count{V : node(V), #succ(V,Z), not node(Z)} =X.
+            </td></tr><tr><td>:- #count{V : edge(V,Y), not edge(Y,V)} =X, X&gt;2.</td></tr><tr><td>:- not node(X), #count{V : edge(V,Y)} =X.</td></tr></tbody></table><p></p></div><div class="EXAMPLE"><a name="AEN1216"></a><p><b>Example 3-4. Unsafe Rules and Constraints</b></p><p></p><table border="0"><tbody><tr><td>a(X) :- not node(X), #count{V : edge(V,X)} &gt; 0.</td></tr><tr><td>a(X) :- node(X), #count{V : edge(V,X)} &gt;Z.</td></tr><tr><td>a(X) :- node(X), #count{V : edge(V,X), not edge(V,Y)} &gt; 0.
+          </td></tr><tr><td>a(X) :- #count{V : node(V), not edge(V,Y), Y=V+Z} &gt; 0.
+          </td></tr><tr><td>:- #count{V : edge(V,Y), not edge(Y,X)} &gt;0, X&gt;2.</td></tr><tr><td>:- #count{V : edge(V,Y)} &gt;0, X&gt;Y.</td></tr><tr><td>:- not node(X), #count{V : edge(V,Y)} &gt;X.</td></tr></tbody></table><p></p></div><p>        An assignment aggregate
+        <span class="emphasis"><i class="EMPHASIS">aggregateFunction{symbolicSet}</i></span> <tt class="LITERAL">=X</tt>
+        makes <tt class="LITERAL">X</tt> safe.
+        However, as for arithmetic predicates, cyclic dependencies are
+        disallowed. For instance, the following rule is unsafe because of
+        a cyclic dependency between two aggregates:
+        </p><p></p><table border="0"><tbody><tr><td>a(Z) :- #count{V : edge(V,Z)} =X,
+            #count{T : edge(T,X)} =Z.</td></tr></tbody></table><p></p>
+        The following rule is unsafe because of a cyclic dependency between
+        a built-in and an aggregate:
+        <p></p><table border="0"><tbody><tr><td>a(Z) :- node(X), #count{V : edge(V,Z)} =Y, Z=X+Y.</td></tr></tbody></table><p></p>
+      <p></p></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN1234">Finite Domain Check</a></h2><p>        In case of programs with arithmetic predicates or complex terms, a
+        finite domain check is performed in order to verify if termination is
+        guaranteed. This check is enabled by default, but can be disabled/enabled
+        by using proper options
+        (<tt class="LITERAL">-nofinitecheck</tt>/<tt class="LITERAL">-finitecheck</tt>
+        see <a href="#SYNOPSIS">Chapter 6</a>).     
+      </p><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN1240">Arithmetic Predicates</a></h3><p>          By evaluating a program with arithmetic predicates it is possible to
+          derive new numeric constants, different from those already occurring
+          in the program. In case of recursive rules, this could cause the
+          non-termination of the evaluation so an error message is issued in
+          this case.
+        </p><div class="EXAMPLE"><a name="AEN1243"></a><p><b>Example 3-5. Not finite domain program</b></p><pre class="SCREEN">            p(0).
+            p(Y) :- p(X), #succ(X,Y).
+          </pre></div><p>          To safely evaluate this kind of programs an upper integer limit N has
+          to be specified either on the command-line (with 
+          <tt class="LITERAL">-N=</tt>N - see <a href="#SYNOPSIS">Chapter 6</a>) or in the
+          program (with <tt class="LITERAL">#maxint=</tt>N.). 
+        </p></div><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN1250">Complex Terms</a></h3><p>          Evaluation of a program might not terminate if a complex term
+          occurs in the head of a recursive rule. 
+        </p><div class="EXAMPLE"><a name="AEN1253"></a><p><b>Example 3-6. Not finite domain program</b></p><pre class="SCREEN">            p(0).
+            p(f(X)) :- q(X).
+            q(X) :- p(X).
+          </pre></div><p>          Some programs can be safely evaluated even if there are
+          complex terms appearing in the head of a rule. This is the case
+          when all arguments of a functional term are restricted to range over
+          a finite domain thanks to the presence of some other atoms in the body. 
+        </p><div class="EXAMPLE"><a name="AEN1257"></a><p><b>Example 3-7. Finite domain program</b></p><pre class="SCREEN">            p(0). r(0).
+            p(f(X)) :- r(X), q(X).
+            q(X) :- p(X).
+          </pre></div><p>          When a program is not recognized to have a finite domain and
+          termination thus cannot be guaranteed, an error is issued.
+          The program can be evaluated in any case, skipping the finite
+          domain check by using the <tt class="LITERAL">-nofinitecheck</tt>
+          command-line option.
+          The <tt class="LITERAL">-maxnesting=</tt><tt class="REPLACEABLE"><i>N</i></tt>
+          command-line option can be used in order to limit the maximum
+          nesting level for complex terms to <tt class="REPLACEABLE"><i>N</i></tt>
+          (see <a href="#SYNOPSIS">Chapter 6</a>).
+        </p><p>          In the presence of list terms, program evaluation may not
+          terminate for two different reasons.
+          The first is an indefinite increase of nesting levels for
+          newly generated lists, similar to functional terms.
+          The second reason is the indefinite increase in length of lists.
+          The following example shows a program whose evaluation does not
+          terminate because of the generation of ever longer lists.
+        </p><div class="EXAMPLE"><a name="AEN1267"></a><p><b>Example 3-8. Program generating ever longer lists</b></p><pre class="SCREEN">            p([]). q(0).
+            p([X|Y]) :- q(X), p(Y).
+          </pre></div><p>     
+          The <tt class="LITERAL">-maxlist=</tt>N 
+          command-line option can be used in order to limit to N the maximum
+          length for list terms (see <a href="#SYNOPSIS">Chapter 6</a>).
+          Note that a program with lists may need to have both options set
+          because <tt class="LITERAL">-maxnesting</tt> limits growth in
+          nesting whereas <tt class="LITERAL">-maxlist</tt> limits growth
+          in length.
+        </p><div class="EXAMPLE"><a name="AEN1275"></a><p><b>Example 3-9. Lists growing both in length and in nesting</b></p><pre class="SCREEN">            p([]). p(0).
+            p([X|Y]) :- p(X), p(Y).
+          </pre></div></div></div></div><div class="CHAPTER"><hr><h1><a name="QUERIES"></a>Chapter 4. Queries</h1><p>      In general, by posing a query one looks for ground substitutions such
+      that the substitution applied to the query is true or validated by the
+      rest of the program. Since a Disjunctive Datalog program may have more than one
+      model, there are different reasoning modes resp. front-ends (brave
+      [cf. <a href="#BRAVE">the Section called <i>Brave Reasoning</i></a>] and cautious [cf. <a href="#CAUTIOUS">the Section called <i>Cautious Reasoning</i></a>]) to decide whether a substituted query is satisfied.
+    </p><p>      The query syntax is the same for all types of queries described in the
+      previous paragraph: Queries consist of one or more literals, which must
+      be separated by commata and terminated by a question mark. Only one
+      query per program is considered.
+    </p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>	If you specify more than one query, only the last one will be
+	considered and <span class="PRODUCTNAME">DLV</span> will issue an
+	appropriate message.
+      </p></blockquote></div><p>      A special case arises when the query is ground. In this case, there is
+      only one meaningful substitution to consider (the empty substitution),
+      and therefore the task of finding a substitution boils down to a
+      decision of whether the empty substitution is admissible or not. For
+      brave reasoning [cf. <a href="#BRAVE">the Section called <i>Brave Reasoning</i></a>] this means deciding whether
+      there exists an answer set in which the query holds, and for cautious
+      reasoning [cf. <a href="#CAUTIOUS">the Section called <i>Cautious Reasoning</i></a>] the task is deciding whether
+      the query holds in all answer sets. For ground queries, there is a third
+      alternative: One might be interested in which models the query is
+      satisfied (cf. <a href="#DATALOG.QUERY">the Section called <i>Plain Disjunctive Datalog</i></a>).
+    </p><div class="EXAMPLE"><a name="AEN1291"></a><p><b>Example 4-1. Queries:</b></p><p>        The following three are ground queries,
+      </p><p></p><table border="0"><tbody><tr><td>not a ?</td></tr><tr><td>a, -b ?</td></tr><tr><td>not ~a2(h,i,j,k), not b1(1,2,3) ?</td></tr></tbody></table><p></p><p>        while the next three are non-ground queries.
+      </p><p></p><table border="0"><tbody><tr><td>a(X) ?</td></tr><tr><td>a(Y), -b(Y) ?</td></tr><tr><td>not ~a2(Z,i,X,k), b1(X,Z,3) ?</td></tr></tbody></table><p></p></div><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>        Note that the conjunction in a query must be safe, just like a rule
+        body, as described in <a href="#SAFETY">Chapter 3</a>.
+      </p></blockquote></div><div class="SECT1"><hr><h2 class="SECT1"><a name="BRAVE">Brave Reasoning</a></h2><p>	If you specify <tt class="LITERAL">-brave</tt> on the command line,
+	<span class="emphasis"><i class="EMPHASIS">brave</i></span> (or <span class="emphasis"><i class="EMPHASIS">credulous</i></span>)
+	reasoning is selected. In this mode, a query must be specified.  A
+	query is bravely true for a substitution, if its conjunction, on which
+	the substitution has been applied, is satisfied in at least one model
+	of the program.
+      </p><p>        <span class="PRODUCTNAME">DLV</span> will output all substitions for which
+        the wuery is bravely true. Each substitution is listed on a separate
+        line, in the form of a list of constants. When ordering the variables
+        of the query by their first occurrence, this list specifies the
+        corresponding constants substituted for the variables. When no model
+        exists, <span class="PRODUCTNAME">DLV</span> will output <tt class="LITERAL">No stable
+        model found.</tt> instead of nothing.
+      </p><div class="EXAMPLE"><a name="QUERY-NONGROUND1"></a><p><b>Example 4-2. An example for non-ground brave reasoning</b></p><p>          Consider a simple three-coloring example. We have three input files, one with map data (<tt class="FILENAME">map</tt>):
+        </p><pre class="SCREEN">          borders(technocratia,absurdistan).
+          borders(technocratia,schilda).
+          borders(technocratia,shangri_la).
+          borders(schilda,absurdistan).
+          borders(schilda,shangri_la).
+        </pre><p>          A second file contains the program and a pre-coloring information
+          that <tt class="LITERAL">shangri_la</tt> should be colored
+          <tt class="LITERAL">blue</tt> (file <tt class="FILENAME">coloring</tt>):
+        </p><pre class="SCREEN">          country(C) :- borders(C,_).
+          country(C) :- borders(_,C).
+
+          colored(C,red) v colored(C,blue) v colored(C,yellow) :- country(C).
+
+          colored(shangri_la,blue).
+
+          :- colored(C1,Col), colored(C2,Col), borders(C1,C2).
+        </pre><p>          A third file (<tt class="FILENAME">coloring.query.1</tt>) contains our
+          query, which (under brave reasoning) just asks for colorings that
+          are possible in any scenario:
+        </p><pre class="SCREEN">          colored(C,Col)?
+        </pre><p>          Let us now call <span class="PRODUCTNAME">DLV</span> on these files with the
+          brave reasoning front-end:
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -brave map coloring coloring.query.1</kbd>
+          shangri_la, blue
+          technocratia, red
+          technocratia, yellow
+          absurdistan, blue
+          schilda, red
+          schilda, yellow
+        </pre><p>          </p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>              The <tt class="LITERAL">-silent</tt> flag is only used to suppress
+              some version information and similar output.
+            </p></blockquote></div>
+        <p></p><p>          </p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>              Each line corresponds to a substitution, in which the first
+              constant is the substitute for <tt class="LITERAL">C</tt> and the
+              second constant is the substitute for <tt class="LITERAL">Col</tt>.
+            </p></blockquote></div>
+        <p></p></div><div class="EXAMPLE"><a name="QUERY-NONGROUND2"></a><p><b>Example 4-3. A query with multiple variable occurrences</b></p><p>          Let us consider the setting of <a href="#QUERY-NONGROUND1">Example 4-2</a> and
+          specify a different query in file
+          <tt class="FILENAME">coloring.query.2</tt>), asking for the color
+          assigned to <tt class="LITERAL">schilda</tt> and the countries that
+          have been assigned this color in some scenario:
+        </p><pre class="SCREEN">          colored(schilda,Col), colored(C,Col)?
+        </pre><p>          We get:
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -brave map coloring coloring.query.2</kbd>
+          red, schilda
+          yellow, schilda
+        </pre><p>          </p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>              Here, the first constant is the substitute for
+              <tt class="LITERAL">Col</tt> and the second constant is the substitute
+              for <tt class="LITERAL">C</tt>, because <tt class="LITERAL">Col</tt> occurs
+              before <tt class="LITERAL">C</tt> in the query of this example.
+            </p></blockquote></div>
+        <p></p><p>          This answer tells us that <tt class="LITERAL">schilda</tt> can be assigned
+          <tt class="LITERAL">red</tt> or <tt class="LITERAL">yellow</tt> in different
+          scenarios, and that no other country will be assigned the
+          color of <tt class="LITERAL">schilda</tt> in the respective scenarios.
+        </p></div><div class="EXAMPLE"><a name="QUERY-NONGROUND3"></a><p><b>Example 4-4. A query with negation</b></p><p>          Let us continue with the setting of <a href="#QUERY-NONGROUND1">Example 4-2</a>
+          with yet another query in file
+          <tt class="FILENAME">coloring.query.3</tt>), this time asking for cities
+          that are not colored like <tt class="LITERAL">absurdistan</tt> in some
+          scenario:
+        </p><pre class="SCREEN">          colored(C,Col), not colored(absurdistan,Col)?
+        </pre><p>          We get:
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -brave map coloring coloring.query.2</kbd>
+          technocratia, red
+          technocratia, yellow
+          schilda, red
+          schilda, yellow
+        </pre><p>          We can see that <tt class="LITERAL">technocratia</tt> and
+          <tt class="LITERAL">schilda</tt> can be colored in a different way as
+          <tt class="LITERAL">absurdistan</tt> is in some scenario. In particular,
+          we learn that in these scenarios <tt class="LITERAL">red</tt> or
+          <tt class="LITERAL">yellow</tt> can be used.
+        </p></div><div class="SECT2"><hr><h3 class="SECT2"><a name="GROUND-BRAVE">Ground Brave Reasoning</a></h3><p>          Brave reasoning over ground (variable-free) is special: If a
+          substition is found, it is the empty substitution (as there are no
+          variables to substitute). If the empty substition exists, the query
+          succeeds; if it does not, the query fails. Since printing an empty
+          substitution or not is not very clear,
+          <span class="PRODUCTNAME">DLV</span> provides a more readable output for
+          programs with a ground query, as the following examples show.
+        </p><div class="EXAMPLE"><a name="QUERY.TEST1"></a><p><b>Example 4-5. An example for succeeding ground brave reasoning</b></p><p>            Input file (<tt class="FILENAME">test_1</tt>):
+          </p><pre class="SCREEN">            a v b.
+            a ?
+          </pre><p>            And here is what happens if we call <span class="PRODUCTNAME">DLV</span>
+            on this file with the brave reasoning front-end:
+          </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -brave test_1</kbd>
+            a is bravely true.
+          </pre><p>            <span class="PRODUCTNAME">DLV</span> tells you that the query <tt class="LITERAL">a
+            ?</tt> is bravely true. By additionally specifying
+            <tt class="LITERAL">--witness</tt> a model is provided, which serves as
+            a witness for the query to be true.
+          </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -brave --witness test_1</kbd>
+            a is bravely true, evidenced by {a}
+          </pre><p>            </p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>                Some optimizations (notably magic sets) may cause the witnessing
+                model to be incomplete.
+              </p></blockquote></div>
+          <p></p></div><div class="EXAMPLE"><a name="AEN1407"></a><p><b>Example 4-6. Failing ground brave reasoning</b></p><p>            Input file (<tt class="FILENAME">test_2</tt>):
+          </p><pre class="SCREEN">            b v c.
+            a ?
+          </pre><p>            And here is what happens if we call <span class="PRODUCTNAME">DLV</span>
+            on this file with the brave reasoning front-end:
+          </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -brave test_2</kbd>
+            a is bravely false.
+          </pre><p>            In this case, <span class="PRODUCTNAME">DLV</span> tells you that the
+            query <tt class="LITERAL">a ?</tt> is bravely false, i. e., there is no
+            model in which the query is satisfied.
+          </p><p>            Indeed, the models of this example are <tt class="LITERAL">{b}</tt> and
+            <tt class="LITERAL">{c}</tt>, both of which do not satisfy
+            <tt class="LITERAL">a</tt>.
+          </p></div></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="CAUTIOUS">Cautious Reasoning</a></h2><p>	If you specify <tt class="LITERAL">-cautious</tt> on the command line,
+	<span class="emphasis"><i class="EMPHASIS">cautious</i></span> (or <span class="emphasis"><i class="EMPHASIS">sceptical</i></span>)
+	reasoning is selected. Again, a query must be specified in this
+	mode. A query is cautiously true for a substitution, if its
+	conjunction, on which the substitution has been applied, is satisfied
+	in all models of the program.
+      </p><div class="EXAMPLE"><a name="AEN1430"></a><p><b>Example 4-7. An example for non-ground cautious reasoning</b></p><p>          Reconsider the setting in <a href="#QUERY-NONGROUND1">Example 4-2</a> and recall the query
+        </p><pre class="SCREEN">          colored(C,Col)?
+        </pre><p>          which under cautious reasoning asks for colorings that hold in all scenarios. We obtain
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -cautious map coloring coloring.query.1</kbd>
+          shangri_la, blue
+          absurdistan, blue
+        </pre><p>          which is less than under brave reasoning. Indeed,
+          <tt class="LITERAL">technocratia</tt> and <tt class="LITERAL">schilda</tt> do
+          not get same color in all scenarios and therefore are not included
+          with cautious reasoning.
+        </p><p>          Let us reconsider the second query that was considered in <a href="#QUERY-NONGROUND2">Example 4-3</a>:
+        </p><pre class="SCREEN">          colored(schilda,Col), colored(C,Col)?
+        </pre><p>          Under cautious reasoning this query asks which color is assigned to
+          <tt class="LITERAL">schilda</tt> in all scenarios, and what other
+          countries are colored in this way in all scenarios. Here we obtain
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -cautious map coloring coloring.query.2</kbd>
+        </pre><p>          which tells us that there is no such color.
+        </p><p>          Finally, the query presented in <a href="#QUERY-NONGROUND3">Example 4-4</a>
+        </p><pre class="SCREEN">          colored(C,Col), not colored(absurdistan,Col)?
+        </pre><p>          asks for countries that are colored in the same way in all
+          scenarios, which is not the color assigned to absurdistan in any
+          scenario. We obtain
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -cautious map coloring coloring.query.3</kbd>
+        </pre><p>          indicating that there is no such country.
+        </p></div><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN1459">Ground Cautious Reasoning</a></h3><p>          The reasoning of <a href="#BRAVE">the Section called <i>Brave Reasoning</i></a> also applies to cautious
+          reasoning over ground queries. Also here, instead of printing an
+          empty substition or no substitution, <span class="PRODUCTNAME">DLV</span>
+          provides a more readable output format, as shown in the following
+          examples.
+        </p><div class="EXAMPLE"><a name="AEN1464"></a><p><b>Example 4-8. Succeeding ground cautious reasoning</b></p><p>            Input file (<tt class="FILENAME">test_3</tt>):
+          </p><pre class="SCREEN">            a v b.
+            a v c.
+            b v c.
+            a :- c.
+            a ?
+          </pre><p>            If we call <span class="PRODUCTNAME">DLV</span> on this file with the
+            cautious reasoning front-end, we get:
+          </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -cautious test_3</kbd>
+            a is cautiously true.
+          </pre><p>            The models of this program are <tt class="LITERAL">{a, b}</tt> and
+            <tt class="LITERAL">{a, c}</tt>, so <tt class="LITERAL">a</tt> is true in all
+            models and therefore the query <tt class="LITERAL">a ?</tt> is cautiously
+            true.
+          </p></div><div class="EXAMPLE"><a name="AEN1479"></a><p><b>Example 4-9. Failing ground cautious reasoning</b></p><p>            If we call <span class="PRODUCTNAME">DLV</span> on the input file from
+            <a href="#QUERY.TEST1">Example 4-5</a> with the cautious reasoning front-end,
+            we see that the query <tt class="LITERAL">a ?</tt> is not true in all
+            models and thus cautiously false.
+          </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -cautious test_1</kbd>
+            a is cautiously false.
+          </pre><p>            Similar to succeeding brave queries (see <a href="#QUERY.TEST1">Example 4-5</a>), by specifying
+            <tt class="LITERAL">--witness</tt> a witnessing model (in which the
+            query is not satisfied) will be displayed.
+          </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -cautious --witness test_1</kbd>
+            a is cautiously false, evidenced by {b}
+          </pre><p>            </p><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>                Some optimizations (notably magic sets) may cause the witnessing
+                model to be incomplete.
+              </p></blockquote></div>
+          <p></p></div><div class="NOTE"><blockquote class="NOTE"><p><b>No model: </b>            If a program does not have any model, any query is true in cautious
+            reasoning, since the criterion that it is satisfied in all models
+            holds trivially.
+          </p></blockquote></div><div class="EXAMPLE"><a name="AEN1500"></a><p><b>Example 4-10. Succeeding cautious reasoning, if the program does not have any model</b></p><p>            Input file (<tt class="FILENAME">test_4</tt>):
+          </p><pre class="SCREEN">            a :- not a.
+            foo ?
+          </pre><p>            This program does not have any model, so the query is true in all
+            models of the program (although this might seem a bit awkward at
+            the first glance):
+          </p><pre class="SCREEN">            <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent -cautious test_4</kbd>
+            foo is cautiously true.
+          </pre></div></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="DATALOG.QUERY">Plain Disjunctive Datalog</a></h2><p>	This mode is available only for ground queries. Unlike brave and
+	cautious reasoning (see <a href="#BRAVE">the Section called <i>Brave Reasoning</i></a> and <a href="#CAUTIOUS">the Section called <i>Cautious Reasoning</i></a>), in the plain Disjunctive Datalog mode one is not
+	interested in the truth or falsity of the query, but rather in those
+	models which satisfy the query.
+      </p><p>	The ground query thus acts like a filter among the models of the program:
+	Only those models in which the query is satisfied will be printed out.
+      </p><div class="EXAMPLE"><a name="AEN1515"></a><p><b>Example 4-11. Plain Disjunctive Datalog query</b></p><p>	Input file (same as in <a href="#QUERY.TEST1">Example 4-5</a>):
+	</p><pre class="SCREEN">	  a v b.
+	  a ?
+	</pre><p>	  The program has two models: <tt class="LITERAL">{a}</tt> and
+	  <tt class="LITERAL">{b}</tt>, only the first of which satisfies the query
+	  <tt class="LITERAL">a ?</tt>.
+	</p><pre class="SCREEN">	  <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV -silent test_1</kbd>
+	  {a}
+	</pre></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="MAGIC.SETS">Dynamic Magic Sets</a></h2><p> 
+        <span class="PRODUCTNAME">DLV</span> includes the technique Dynamic Magic
+        Sets, as described in <a href="http://www.wfaber.com/research/papers/TRMAT092009.pdf" target="_top">this
+        technical report</a>. By default it will be applied on positive
+        programs with brave or cautious queries that are partially (or fully)
+        bound. They cannot be applied if the program contains aggregates,
+        constraints, strong negation, or weak constraints.
+      </p><p>        The application of Dynamic Magic Sets can be requested explicitly by
+        specifying <tt class="LITERAL">-OMS</tt> or <tt class="LITERAL">-OODMS</tt> on the
+        command line. Also if requested explicitly, a query must be present
+        (brave or cautious), aggregates and weak constraints must not be
+        present. The presence of unstratified negation is always fine,
+        otherwise the correctness of the method is still guaranteed for
+        so-called super-coherent programs, that is, programs that are
+        guaranteed to have at least one answer set when an arbitrary set of
+        facts is added, as shown in <a href="http://dx.doi.org/10.3233/AIC-2011-0492" target="_top">this paper</a>. It
+        is also possible to invoke a non-optimized variant of the method by
+        specifying command-line option <tt class="LITERAL">-ODMS</tt>, but this
+        should normally not be used.
+      </p><p>        It is also possible to turn off Dynamic Magic Sets explicitly by
+        specifying <tt class="LITERAL">-OMS-</tt> or <tt class="LITERAL">-OODMS-</tt> on
+        the command-line.
+      </p></div></div><div class="CHAPTER"><hr><h1><a name="AEN1540"></a>Chapter 5. Front-ends</h1><p>      In addition to Disjunctive Datalog (<a href="#DISJUNCTIVE.DATALOG">Chapter 2</a>) several front-ends exist, which
+      interface with the generic system.
+    </p><p>      The Brave and Cautious Reasoning front-ends have already been described.
+      Similarly, a front-end for computing various flavors of diagnosis is
+      provided by specifying the respective -FD or -FR options. Finally, there
+      is also a front-end implementing a subset of SQL3 (SQL3 is a proposed
+      standard, which - among others - incorporates means to formulate a
+      restricted class of recursive queries).
+    </p><div class="TABLE"><a name="AEN1545"></a><p><b>Table 5-1. Front-ends to <span class="PRODUCTNAME">DLV</span></b></p><table frame="border" rules="all" class="CALSTABLE" border="1"><colgroup><col><col></colgroup><thead><tr><th>Front-end</th><th>Command-line Switches</th></tr></thead><tbody><tr><td>Disjunctive Datalog</td><td>[default]</td></tr><tr><td>Diagnosis</td><td>-FD* and -FR*</td></tr><tr><td>Planning</td><td>-FP*</td></tr><tr><td>SQL3</td><td>-FS</td></tr></tbody></table></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN1566">Diagnosis Front-end</a></h2><p>	<span class="PRODUCTNAME">DLV</span> provides front-ends for abductive and
+	consistency-based (Reiter's) diagnostic reasoning. <a href="#SYNOPSIS">Chapter 6</a> describes how to invoke these front-ends.
+      </p><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN1571">Restrictions</a></h3><p>	  A general restriction for Reiter's diagnostic reasoning is that
+	  hypotheses may only be formed of the predicate "ab".
+	</p><p>	  Additionally, several restrictions are imposed on the theories in
+	  diagnostic reasoning.
+	</p><div class="TABLE"><a name="AEN1575"></a><p><b>Table 5-2. Theory restrictions in abductive diagnostic reasoning</b></p><table frame="border" rules="all" class="CALSTABLE" border="1"><colgroup><col><col></colgroup><thead><tr><th>Minimality criterion</th><th>Theory Restrictions</th></tr></thead><tbody><tr><td>none</td><td>none</td></tr><tr><td>single error</td><td>none</td></tr><tr><td>subset minimality</td><td>non-disjunctive, positive</td></tr></tbody></table></div><div class="TABLE"><a name="AEN1592"></a><p><b>Table 5-3. Theory restrictions in Reiter's diagnostic reasoning</b></p><table frame="border" rules="all" class="CALSTABLE" border="1"><colgroup><col><col></colgroup><thead><tr><th>Minimality criterion</th><th>Theory Restrictions</th></tr></thead><tbody><tr><td>none</td><td>non-disjunctive, positive (hypotheses may occur negated)</td></tr><tr><td>single error</td><td>non-disjunctive, positive (hypotheses may occur negated)</td></tr><tr><td>subset minimality</td><td>non-disjunctive, positive (hypotheses may occur negated)</td></tr></tbody></table></div></div></div></div><div class="CHAPTER"><hr><h1><a name="SYNOPSIS"></a>Chapter 6. Synopsis</h1><p>      What follows is a description of how to invoke
+      <span class="PRODUCTNAME">DLV</span>.
+    </p><p><b class="COMMAND">DLV</b>  [<tt class="REPLACEABLE"><i>front-end options</i></tt>] [<tt class="REPLACEABLE"><i>general options</i></tt>] [<tt class="REPLACEABLE"><i>filename</i></tt>]...</p><div class="TABLE"><a name="AEN1621"></a><p><b>Table 6-1. Front-end Options</b></p><table frame="border" rules="all" class="CALSTABLE" border="1"><colgroup><col><col></colgroup><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td>-FB, -brave</td><td>Brave query answering</td></tr><tr><td>-FC, -cautious</td><td>Cautious query answering</td></tr><tr><td>--witness</td><td>Print a witnessing answer set for true ground brave queries and false ground cautious queries.</td></tr><tr><td>-FD</td><td>Abductive Diagnosis</td></tr><tr><td>-FDmin</td><td>Abductive Diagnosis, subset minimal</td></tr><tr><td>-FDsingle</td><td>Abductive Diagnosis, single error</td></tr><tr><td>-FR</td><td>Reiter's Diagnosis</td></tr><tr><td>-FRmin</td><td>Reiter's Diagnosis, subset minimal</td></tr><tr><td>-FRsingle</td><td>Reiter's Diagnosis, single error</td></tr><tr><td>-FP</td><td>Planning front-end, interactive mode</td></tr><tr><td>-FPsec</td><td>Planning front-end, secure plans only</td></tr><tr><td>-FPopt</td><td>Planning front-end, optimistic plans as well</td></tr><tr><td>-FPcompletecheck=<tt class="REPLACEABLE"><i>[1,2]</i></tt></td><td>Planning front-end, choose a complete secure check 
+(currently available SC1 and SC2). If options -FPcompletecheck and -FPsoundcheck
+are given, <span class="PRODUCTNAME">DLV</span> uses the sound check first. Plans
+which pass are stated to be secure, plans which fail the subsequent
+complete check are stated to be insecure. For plans which fail the sound
+check but pass the complete check, plan security is not decidable.</td></tr><tr><td>-FPsoundcheck=<tt class="REPLACEABLE"><i>[1,2]</i></tt></td><td>Planning front-end, choose a sound secure check (currently
+available SC1 and SC2).</td></tr><tr><td>-planlength=<tt class="REPLACEABLE"><i>N</i></tt></td><td>Planning front-end, choose the plan length. If this option
+is given, the plan length given in the input file is overridden.</td></tr><tr><td>-plancache=<tt class="REPLACEABLE"><i>N</i></tt></td><td>Planning front-end, choose the size of the plan cache
+(number of plans, defaults to 1000)</td></tr><tr><td>-planminactions=<tt class="REPLACEABLE"><i>N</i></tt></td><td>Planning front-end, choose the minimum number of actions 
+                  executed in parallel per time. If this option is given, 
+                  keyword "noConcurrency." in the input file is overridden.
+            </td></tr><tr><td>-planmaxactions=<tt class="REPLACEABLE"><i>N</i></tt></td><td>Planning front-end, choose the maximum number of actions 
+                  executed in parallel per time. If this option is given, 
+                  keyword "noConcurrency." in the input file is overridden.
+            </td></tr></tbody></table></div><div class="TABLE"><a name="AEN1690"></a><p><b>Table 6-2. General Options</b></p><a name="OPTION.N"></a><table frame="border" rules="all" class="CALSTABLE" border="1"><colgroup><col><col></colgroup><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td>-det</td><td>Compute a deterministic set, i.e., a superset of the
+            well-founded model that is contained in the intersection of all
+            answer sets (if any).</td></tr><tr><td>-instantiate</td><td>Only perform grounding and print the resulting instantiation.</td></tr><tr><td>-filter=<tt class="REPLACEABLE"><i>pred</i></tt></td><td>Turns on filtering. Predicates named
+<tt class="REPLACEABLE"><i>pred</i></tt> or -<tt class="REPLACEABLE"><i>pred</i></tt> (the true
+negation) will be included in the output. This option may be used multiple
+times, and <tt class="REPLACEABLE"><i>pred</i></tt> may also be a comma-separated list of
+predicate names. Predicates not mentioned in any <tt class="LITERAL">-filter</tt> or
+<tt class="LITERAL">-pfilter</tt> option are not printed.
+            </td></tr><tr><td>-pfilter=<tt class="REPLACEABLE"><i>pred</i></tt></td><td>Turns on filtering. Predicates named
+<tt class="REPLACEABLE"><i>pred</i></tt> will be included in the output. This option
+may be used multiple times, and <tt class="REPLACEABLE"><i>pred</i></tt> may also be
+a comma-separated list of predicate names. Predicates not mentioned in any
+<tt class="LITERAL">-filter</tt> or <tt class="LITERAL">-pfilter</tt> option are not
+printed.
+            </td></tr><tr><td>-nofacts</td><td>Pure EDB predicates (that is, which are defined exclusively by facts) will not be included in the output.
+            </td></tr><tr><td>-n=<tt class="REPLACEABLE"><i>n</i></tt></td><td>Compute at most <tt class="REPLACEABLE"><i>n</i></tt> models. If <tt class="REPLACEABLE"><i>n</i></tt> is <tt class="LITERAL">0</tt> or <tt class="LITERAL">all</tt>, all models are computed.</td></tr><tr><td>-costbound=<tt class="REPLACEABLE"><i>weight[,weight]</i></tt></td><td>               Compute the models with a cost less-or-equal than
+               <tt class="LITERAL">costbound</tt>. <tt class="REPLACEABLE"><i>weight</i></tt>s
+               should be positive integers.  If a weight is set to
+               <tt class="LITERAL">_</tt> then the initial value of the
+               corresponding priority level is unbound.  If weights of
+               costbound exceed or lack, only lower levels are considered.
+            </td></tr><tr><td>-N=<tt class="REPLACEABLE"><i>N</i></tt></td><td>Limit integers to [0,<tt class="REPLACEABLE"><i>N</i></tt>].</td></tr><tr><td>-silent</td><td>Suppress informational output and blank lines.</td></tr><tr><td>-stats</td><td>Print statistics and timings regarding the
+            computation. (Note that the timings are an unsupported
+            feature. They may be inaccurate and even completely incorrect for
+            extremely short resp. long running instances.)
+            </td></tr><tr><td>-wait</td><td>Before terminating, wait until Return is pressed.</td></tr><tr><td>-finitecheck</td><td>Perform finite domain check. [default]</td></tr><tr><td>-nofinitecheck</td><td>Skip finite domain check.</td></tr><tr><td>-maxnesting=<tt class="REPLACEABLE"><i>N</i></tt></td><td>Limit the maximum nesting level for complex terms 
+            to <tt class="REPLACEABLE"><i>N</i></tt>. Default is 0 (no limits).
+            </td></tr><tr><td>-maxlist=<tt class="REPLACEABLE"><i>N</i></tt></td><td>Limit the maximum length for list terms to 
+            <tt class="REPLACEABLE"><i>N</i></tt>. Default is 0 (no limits).
+            </td></tr><tr><td>-O0</td><td>Disable all optimizations.</td></tr><tr><td>-OMS, -OODMS</td><td>Enable Optimized Disjunctive Magic Sets rewriting. [default]</td></tr><tr><td>-OMS-, -OODMS-</td><td>Disable Optimized Disjunctive Magic Sets rewriting.</td></tr><tr><td>-ODMS</td><td>Enable Disjunctive Magic Sets rewriting.</td></tr><tr><td>-ODMS-</td><td>Disable Disjunctive Magic Sets rewriting.</td></tr><tr><td>-OR</td><td>Enable input rewriting. [default]</td></tr><tr><td>-OR-</td><td>Disable input rewriting.</td></tr><tr><td>-ORdr</td><td>Rewriting deletes rules whose body is always 
+            false. [default]
+            </td></tr><tr><td>-ORdr-</td><td>Rewriting does not delete rules whose body is always 
+            false.
+            </td></tr><tr><td>-OS</td><td>Enable input subsumption checking and elimination.</td></tr><tr><td>-OGp</td><td>Use special grounding for propositional input. [default]</td></tr><tr><td>-OGp-</td><td>Do not use special grounding for propositional input.</td></tr><tr><td>-OGo0</td><td>No body reordering.</td></tr><tr><td>-OGo1</td><td>Simple body reordering.</td></tr><tr><td>-OGo2</td><td>Advanced body reordering. [default]</td></tr><tr><td>-OGs</td><td>Grounding employs semi-naive evaluation. [default]</td></tr><tr><td>-OH</td><td>Employ Heuristics in the Model Generator. [default]</td></tr><tr><td>-OH-</td><td>Disable Heuristics in the Model Generator.</td></tr><tr><td>-OM-</td><td>Disable Model Checker. Not for general use!</td></tr><tr><td>-OPf</td><td>Enable partial model checking ``forwards''. [default]</td></tr><tr><td>-OPf-</td><td>Disable partial model checking ``forwards''.</td></tr><tr><td>--</td><td>Also read input from stdin.</td></tr></tbody></table></div></div><div class="CHAPTER"><hr><h1><a name="AEN1835"></a>Chapter 7. Random tips / How to write <span class="PRODUCTNAME">DLV</span>
+    programs</h1><p>      Note that base facts (EDB predicates) are already part of the input and
+      thus they are not printed with the result.
+    </p><p>We are often asked how to write <span class="PRODUCTNAME">DLV</span>
+    programs that are both easy to understand and efficient. While clearly
+    there is no simple answer, here are some general recommendations:
+      </p><p></p><ul><li><p>            Use disjunction.
+          </p></li><li><p>            Use constraints.
+          </p></li><li><p>            Avoid non-stratified negation.
+          </p></li><li><p>            Use the query facility, even when not employing brave or cautious
+            reasoning.
+          </p></li><li><p>            Use built-in predicates.
+          </p></li></ul>
+    <p></p></div><div class="CHAPTER"><hr><h1><a name="ODBC"></a>Chapter 8. ODBC interface (#import/#export Built-ins)</h1><div class="SECT1"><h2 class="SECT1"><a name="AEN1854">Introduction and Overview</a></h2><p>        Some <span class="PRODUCTNAME">DLV</span> versions (see <a href="http://www.dbai.tuwien.ac.at/proj/dlv/#download" target="_top">the
+        <span class="PRODUCTNAME">DLV</span> download page</a>) provide an
+        interface to database systems via ODBC (Open Database
+        Connectivity). For Unix-like systems, this is achieved by using <a href="http://www.unixodbc.org/" target="_top">unixODBC</a>, while for Windows
+        systems Microsoft ODBC is used.
+      </p><p>        First we will give a brief example in which we set up
+        <span class="PRODUCTNAME">unixODBC</span> with a
+        <span class="PRODUCTNAME">MySQL</span> database system. Note that this is
+        not at all related to <span class="PRODUCTNAME">DLV</span>. It is not
+        important, which database is "behind" the ODBC interface,
+        <span class="PRODUCTNAME">MySQL</span> is just an example. You should in any
+        case consult the respective manuals for your database,
+        <span class="PRODUCTNAME">unixODBC</span> or the Windows ODBC subsystem when
+        creating your ODBC setup.
+      </p><p>        After this intermezzo, we describe the <span class="PRODUCTNAME">DLV</span>
+        constructs for accessing databases thorugh ODBC: the
+        <tt class="LITERAL">#import</tt> and <tt class="LITERAL">#export</tt> built-ins of
+        the <span class="PRODUCTNAME">DLV</span> system.
+      </p></div><div class="SECT1"><hr><h2 class="SECT1"><a name="ODBCSETUP">Example ODBC Setup</a></h2><p>        In our example, we set up a <a href="http://www.mysql.com/" target="_top">MySQL</a> database called
+        <tt class="LITERAL">test</tt> and a user <tt class="LITERAL">dlvodbc</tt> with
+        password <tt class="LITERAL">dlvodbc</tt> on our
+        <span class="PRODUCTNAME">MySQL</span> server (in our example all is on one
+        machine, but the database could well be on a different server than the
+        ODBC interface). We assume that <span class="PRODUCTNAME">MySQL</span> has
+        been properly installed.
+      </p><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN1881">Creating user and table in MySQL</a></h3><p>          There are various ways for creating a user, database and table using
+          all sort of GUIs and helper programs.  What we do here is a very
+          generic way of doing that job, which uses only the generic
+          <span class="PRODUCTNAME">MySQL</span> text client:
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">mysql -u root -p</kbd>
+          <samp class="PROMPT">Enter password:</samp> <kbd class="USERINPUT">your_mysql_root_password</kbd>
+          <samp class="COMPUTEROUTPUT">[some output dependent on your MySQL installation]
+          </samp>
+
+          <samp class="PROMPT">mysql&gt;</samp> <kbd class="USERINPUT">CREATE DATABASE test;</kbd>
+          <samp class="COMPUTEROUTPUT">[some output]</samp>
+
+          <samp class="PROMPT">mysql&gt;</samp> <kbd class="USERINPUT">USE mysql;</kbd>
+          <samp class="COMPUTEROUTPUT">[some output]</samp>
+
+          <samp class="PROMPT">mysql&gt;</samp> <kbd class="USERINPUT">GRANT select, insert, alter, update, delete, create, drop,</kbd>
+          <samp class="PROMPT">    -&gt;</samp> <kbd class="USERINPUT">create temporary tables, index ON test.*</kbd>
+          <samp class="PROMPT">    -&gt;</samp> <kbd class="USERINPUT">TO dlvodbc@localhost IDENTIFIED BY 'dlvodbc';</kbd>
+          <samp class="COMPUTEROUTPUT">Query OK, 0 rows affected (0.36 sec)</samp>
+
+          <samp class="PROMPT">mysql&gt;</samp> <kbd class="USERINPUT">FLUSH PRIVILEGES;</kbd>
+          <samp class="COMPUTEROUTPUT">Query OK, 0 rows affected (0.01 sec)</samp>
+
+          <samp class="PROMPT">mysql&gt;</samp> <kbd class="USERINPUT">QUIT;</kbd>
+          <samp class="COMPUTEROUTPUT">Bye</samp>
+        </pre><p>          Now we check whether it works and create a relation <tt class="LITERAL">p</tt> and insert two tuples.
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">mysql -u dlvodbc -p test</kbd>
+          <samp class="PROMPT">Enter password:</samp> <kbd class="USERINPUT">dlvodbc</kbd>
+          <samp class="COMPUTEROUTPUT">[some output dependent on your MySQL installation]</samp>
+
+          <samp class="PROMPT">mysql&gt;</samp> <kbd class="USERINPUT">CREATE TABLE p(ID1 char, ID2 char);</kbd>
+          <samp class="COMPUTEROUTPUT">Query OK, 0 rows affected (0.32 sec)</samp>
+
+          <samp class="PROMPT">mysql&gt;</samp> <kbd class="USERINPUT">INSERT INTO p VALUES ('a','b'), ('b','c');</kbd>
+          <samp class="COMPUTEROUTPUT">Query OK, 2 rows affected (0.00 sec)</samp>
+          <samp class="COMPUTEROUTPUT">Records: 2  Duplicates: 0  Warnings: 0</samp>
+
+          <samp class="PROMPT">mysql&gt;</samp> <kbd class="USERINPUT">SELECT * FROM p;</kbd>
+          <samp class="COMPUTEROUTPUT">+------+------+</samp>
+          <samp class="COMPUTEROUTPUT">| ID1  | ID2  |</samp>
+          <samp class="COMPUTEROUTPUT">+------+------+</samp>
+          <samp class="COMPUTEROUTPUT">| a    | b    |</samp>
+          <samp class="COMPUTEROUTPUT">| b    | c    |</samp>
+          <samp class="COMPUTEROUTPUT">+------+------+</samp>
+          <samp class="COMPUTEROUTPUT">2 rows in set (0.00 sec)</samp>
+
+          <samp class="PROMPT">mysql&gt;</samp> <kbd class="USERINPUT">QUIT;</kbd>
+          <samp class="COMPUTEROUTPUT">Bye</samp>
+        </pre></div><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN1937">Set up unixODBC</a></h3><p>          Now let's set up <span class="PRODUCTNAME">unixODBC</span> (we again
+          assume that it has already been installed correctly). The relevant
+          configuration files are <tt class="FILENAME">/etc/odbcinst.ini</tt> and
+          <tt class="FILENAME">/etc/odbc.ini</tt>. For further information or
+          finding out what to do for configuring Microsoft ODBC for use with
+          <span class="PRODUCTNAME">MySQL</span>, <a href="http://dev.mysql.com/doc/refman/5.0/en/odbc-connector.html" target="_top">MyODBC
+          documentation</a>.
+        </p><p>          <tt class="FILENAME">/etc/odbcinst.ini</tt> defines the drivers. This
+          might have been configured already by your system upon installation;
+          on our test system it looks as follows:
+        </p><pre class="SCREEN">          [MySQL]
+          Description     = MySQL driver
+          Driver          = /usr/lib/odbc/libmyodbc.so
+          Setup           = /usr/lib/odbc/libodbcmyS.so
+          CPTimeout       =
+          CPReuse         =
+          FileUsage       = 1
+        </pre><p>          <tt class="FILENAME">/etc/odbc.ini</tt> defines the database access. For
+          the database we have just created, this looks as follows:
+        </p><pre class="SCREEN">          [testodbc]
+          Description  = test
+          Driver       = MySQL
+          Server       = localhost
+          User         = dlvodbc
+          Password     = dlvodbc
+          Database     = test
+          Port         = 3306
+          Socket       =
+          Option       =
+          Stmt         =
+        </pre><p>          The name in square brackets is the ODBC DSN (Data Source Name). The
+          driver must match the ID defined in /etc/odbcinst.ini, User,
+          Password, and Database are those of our MySQL setup. The Server is
+          our own machine (localhost), using the standard MySQL port 3306.
+        </p><p>          <span class="PRODUCTNAME">unixODBC</span> includes the program
+          <b class="COMMAND">isql</b> that can be used to test the ODBC setup.
+        </p><pre class="SCREEN">          <samp class="PROMPT">$</samp> <kbd class="USERINPUT">isql testodbc dlvodbc dlvodbc</kbd>
+          <samp class="COMPUTEROUTPUT">+---------------------------------------+</samp>
+          <samp class="COMPUTEROUTPUT">| Connected!                            |</samp>
+          <samp class="COMPUTEROUTPUT">|                                       |</samp>
+          <samp class="COMPUTEROUTPUT">| sql-statement                         |</samp>
+          <samp class="COMPUTEROUTPUT">| help [tablename]                      |</samp>
+          <samp class="COMPUTEROUTPUT">| quit                                  |</samp>
+          <samp class="COMPUTEROUTPUT">|                                       |</samp>
+          <samp class="COMPUTEROUTPUT">+---------------------------------------+</samp>
+          <samp class="PROMPT">SQL&gt;</samp> <kbd class="USERINPUT">select * from p</kbd>
+          <samp class="COMPUTEROUTPUT">+----+----+</samp>
+          <samp class="COMPUTEROUTPUT">| ID1| ID2|</samp>
+          <samp class="COMPUTEROUTPUT">+----+----+</samp>
+          <samp class="COMPUTEROUTPUT">| a  | b  |</samp>
+          <samp class="COMPUTEROUTPUT">| b  | c  |</samp>
+          <samp class="COMPUTEROUTPUT">+----+----+</samp>
+          <samp class="COMPUTEROUTPUT">SQLRowCount returns 2</samp>
+          <samp class="COMPUTEROUTPUT">2 rows fetched</samp>
+          <samp class="PROMPT">SQL&gt;</samp> <kbd class="USERINPUT">quit</kbd>
+        </pre></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN1978"><span class="PRODUCTNAME">DLV</span> and ODBC</a></h2><p>        We extend <span class="PRODUCTNAME">DLV</span> with an ODBC interface by
+        adding two new built-in commands to import and export relations
+        (predicates) from/to a DBMS. These commands take a number of arguments
+        providing the information needed for DBMS authentication, the
+        relational predicate to import/export from/to the DBMS, and the name
+        of the table in the DBMS.
+      </p><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN1983">The #import command</a></h3><p></p><p>          The <tt class="LITERAL">#import</tt> command reads tuples from a specified
+          table of a relational database and stores them as facts (EDB
+          program) with a predicate name <tt class="LITERAL">p</tt> provided by the
+          user.  The name of the imported atoms is set to
+          <tt class="LITERAL">p</tt>, and defines a part of the EDB program. Further
+          EDB predicates can be added by providing input via text files. Since
+          <span class="PRODUCTNAME">DLV</span> supports only unsigned
+          integer and constant data types, the <tt class="LITERAL">#import</tt>
+          commands takes a parameter which specifies a type conversion for
+          every column of the table.
+        </p><p>          The <tt class="LITERAL">#import</tt> command is of the form:
+        </p><p>          </p><pre class="SYNOPSIS">#import (databasename,"username","password","query", predname[, typeConv]).</pre>
+        <p></p><p>          where:
+          </p><p></p><ol type="1"><li><p>                <tt class="LITERAL">databasename</tt> is the name of the ODBC DSN (Data Source Name);
+              </p></li><li><p>                <tt class="LITERAL">username</tt> defines the name of the user who
+                connects to the database (the string must be enclosed by " ");
+              </p></li><li><p>                <tt class="LITERAL">password</tt> defines the password of that user
+                (the string must be enclosed by " ");
+              </p></li><li><p>                <tt class="LITERAL">query</tt> is an SQL statement that constructs
+                the table that will be imported (and must be quoted by " ");
+              </p></li><li><p>                <tt class="LITERAL">predname</tt> defines the name of the predicate
+                that will be used;
+              </p></li><li><p>                <tt class="LITERAL">typeConv</tt> is optional and specifies the conversion for
+                mapping DBMS data types to <span class="PRODUCTNAME">DLV</span> data
+                type; it provides a conversion for each column imported by the
+                database.
+              </p></li></ol>
+        <p></p><p>          The <tt class="LITERAL">typeConv</tt> parameter is a string with the
+          following syntax:<tt class="LITERAL">type: Conv [, Conv]</tt>, where
+          "<tt class="LITERAL">type:</tt>" is a string constant and
+          <tt class="LITERAL">Conv</tt> is one of several conversion types:
+          </p><p></p><ul><li><p>                <tt class="LITERAL">U_INT</tt>: the column is converted to an
+                unsigned integer;
+              </p></li><li><p>                <tt class="LITERAL">UT_INT</tt>: the column is truncated to an
+                unsigned integer;
+              </p></li><li><p>                <tt class="LITERAL">UR_INT</tt>: the column is rounded to an
+                unsigned integer;
+              </p></li><li><p>                <tt class="LITERAL">CONST</tt>: the column is converted to a string
+                without quotes;
+              </p></li><li><p>                <tt class="LITERAL">Q_CONST</tt>: the column is
+                converted to a string with quotes.
+              </p></li></ul>
+      <p></p><p>          The number of the entries in the conversion list has to match the
+          number of columns in the selected table.  Strings converted as
+          <tt class="LITERAL">CONST</tt> should be valid
+          <span class="PRODUCTNAME">DLV</span> constants (e.g. they must not contain
+          spaces).
+        </p><div class="EXAMPLE"><a name="AEN2041"></a><p><b>Example 8-1. Simple table import</b></p><p>            Let us now use the DSN defined in <a href="#ODBCSETUP">the Section called <i>Example ODBC Setup</i></a> to import the table <tt class="LITERAL">p</tt>.
+            Let the file <tt class="FILENAME">importonly</tt> contain just a single
+            <tt class="LITERAL">#import</tt> statement:
+            </p><pre class="SCREEN">              #import(testodbc,"dlvodbc","dlvodbc","SELECT * FROM p",p).
+            </pre>
+            Invoking <span class="PRODUCTNAME">DLV</span> (obviously a version with
+            ODBC support) with this file yields:
+            <pre class="SCREEN">              <samp class="PROMPT">$ </samp> <kbd class="USERINPUT">DLV importonly -silent</kbd>
+              <samp class="COMPUTEROUTPUT">{p("a","b"), p("b","c")}</samp>
+            </pre>
+          <p></p></div><div class="EXAMPLE"><a name="ODBCTRANSCLOSURE"></a><p><b>Example 8-2. Transitive closure on imported table</b></p><p>            The imported table <tt class="LITERAL">p</tt> can now be used just like
+            any other predicate. For instance we may define a predicate <tt class="LITERAL">t</tt> which is the transitive closure of <tt class="LITERAL">p</tt>.  Assuming that the file
+            <tt class="FILENAME">importtransclosure</tt> contains
+            </p><pre class="SCREEN">              #import(testodbc,"dlvodbc","dlvodbc","SELECT * FROM p",p).
+              t(X,Y) :- p(X,Y).
+              t(X,Y) :- t(X,Z), t(Z,Y).
+            </pre>
+            invoking <span class="PRODUCTNAME">DLV</span> yields:
+            <pre class="SCREEN">              <samp class="PROMPT">$ </samp> <kbd class="USERINPUT">DLV importonly -silent</kbd>
+              <samp class="COMPUTEROUTPUT">{p("a","b"), p("b","c"), t("a","b"), t("a","c"), t("b","c")}</samp>
+            </pre>
+          <p></p></div></div><div class="SECT2"><hr><h3 class="SECT2"><a name="AEN2067">The #export command</a></h3><p>          The <tt class="LITERAL">#export</tt> built-in allows exporting the extent
+          of a predicate in an answer set to a database.  Every atom (for that
+          predicate) which is true in the answer set will lead to the
+          insertion of a corresponding tuple into the database.
+        </p><p>          The <tt class="LITERAL">#export</tt> command comes in two variants.  The
+          first is of the form
+        </p><pre class="SYNOPSIS">#export(databasename, "username", "password", predname, tablename).</pre><p>          The second variant adds another parameter, "<tt class="LITERAL">REPLACE
+          where SQL-Condition</tt>", which
+          replaces the tuples in the table tablename for which SQL-Condition
+          holds.  It allows adding tuples to the table without creating
+          conflicts whenever such tuples would violate some integrity
+          constraint of the database (e.g. duplicate values for a key
+          attribute).
+        </p><pre class="SYNOPSIS">#export(databasename,"username","password",predname, tablename,"REPLACE where SQL-Condition").</pre><p>          where
+          </p><p></p><ol type="1"><li><p>                <tt class="LITERAL">databasename</tt> is the name of the database
+                server;
+              </p></li><li><p>                <tt class="LITERAL">username</tt> is the name of the user who
+                connects to the database (the string must be enclosed by " ");
+              </p></li><li><p>                <tt class="LITERAL">password</tt> provides the password of that user
+                (the string must be enclosed by " ");
+              </p></li><li><p>                <tt class="LITERAL">predname</tt> defines the name of the predicate
+                that will be exported;
+              </p></li><li><p>                <tt class="LITERAL">tablename</tt> defines the name of the table;
+                and
+              </p></li><li><p>                "<tt class="LITERAL">REPLACE where</tt>
+                <tt class="REPLACEABLE"><i>SQL-Condition</i></tt>" contains the key
+                words <tt class="LITERAL">REPLACE</tt> and <tt class="LITERAL">where</tt>
+                followed by an SQL-Condition which indicates the tuples which
+                shall be deleted from the relational table before the export
+                takes place.
+              </p></li></ol>
+        <p></p><p>          <span class="emphasis"><i class="EMPHASIS">Remark:</i></span> Export must be used with option -n=1.
+        </p><div class="EXAMPLE"><a name="AEN2102"></a><p><b>Example 8-3. Exporting a transitive closure</b></p><p>            Let us now extend the program of <a href="#ODBCTRANSCLOSURE">Example 8-2</a> and  insert all tuples of predicate
+            <tt class="LITERAL">t</tt> into a table of the same name. The program in
+            file <tt class="FILENAME">importtransclosureexport</tt>is then
+            </p><pre class="SCREEN">              #import(testodbc,"dlvodbc","dlvodbc","SELECT * FROM p",p).
+              t(X,Y) :- p(X,Y).
+              t(X,Y) :- t(X,Z), t(Z,Y).
+              #export(testodbc,"dlvodbc","dlvodbc",t,t).
+            </pre>
+            Note that is not needed that the <tt class="LITERAL">#export</tt>
+            statement is placed after the definition of the predicates it
+            exports.
+          <p></p><p>            For exporting into <tt class="LITERAL">t</tt>, this table must
+            exist. Here we create it using <b class="COMMAND">isql</b> of
+            <span class="PRODUCTNAME">unixODBC</span> (for Windows, you could for
+            example use the <span class="PRODUCTNAME">MySQL</span> client).
+            </p><pre class="SCREEN">              <samp class="PROMPT">$</samp> <kbd class="USERINPUT">isql testodbc dlvodbc dlvodbc</kbd>
+              <samp class="COMPUTEROUTPUT">+---------------------------------------+</samp>
+              <samp class="COMPUTEROUTPUT">| Connected!                            |</samp>
+              <samp class="COMPUTEROUTPUT">|                                       |</samp>
+              <samp class="COMPUTEROUTPUT">| sql-statement                         |</samp>
+              <samp class="COMPUTEROUTPUT">| help [tablename]                      |</samp>
+              <samp class="COMPUTEROUTPUT">| quit                                  |</samp>
+              <samp class="COMPUTEROUTPUT">|                                       |</samp>
+              <samp class="COMPUTEROUTPUT">+---------------------------------------+</samp>
+
+              <samp class="PROMPT">SQL&gt;</samp> <kbd class="USERINPUT">SELECT * FROM t</kbd>
+              <samp class="COMPUTEROUTPUT">[ISQL]ERROR: Could not SQLExecute</samp>
+
+              <samp class="PROMPT">SQL&gt;</samp> <kbd class="USERINPUT">CREATE TABLE t(ID1 char, ID2 char);</kbd>
+              <samp class="COMPUTEROUTPUT">SQLRowCount returns 0</samp>
+
+              <samp class="PROMPT">SQL&gt;</samp> <kbd class="USERINPUT">SELECT * FROM t;</kbd>
+              <samp class="COMPUTEROUTPUT">+----+----+</samp>
+              <samp class="COMPUTEROUTPUT">| ID1| ID2|</samp>
+              <samp class="COMPUTEROUTPUT">+----+----+</samp>
+              <samp class="COMPUTEROUTPUT">+----+----+</samp>
+              <samp class="COMPUTEROUTPUT">SQLRowCount returns 0</samp>
+
+              <samp class="PROMPT">SQL&gt;</samp> <kbd class="USERINPUT">quit</kbd>
+            </pre>
+            Now run <span class="PRODUCTNAME">DLV</span> on it:
+            <pre class="SCREEN">              <samp class="PROMPT">$</samp> <kbd class="USERINPUT">DLV importtransclosureexport -n=1 -silent</kbd>
+              <samp class="COMPUTEROUTPUT">{p("a","b"), p("b","c"), t("a","b"), t("a","c"), t("b","c")}</samp>
+            </pre>
+            So far this is the same as in <a href="#ODBCTRANSCLOSURE">Example 8-2</a>, but now as a sideeffect, the table
+            <tt class="LITERAL">t</tt> has been filled with the respective
+            tuples. We can check this using <b class="COMMAND">isql</b> again:
+            <pre class="SCREEN">              <samp class="PROMPT">$</samp> <kbd class="USERINPUT">isql testodbc dlvodbc dlvodbc</kbd>
+              <samp class="COMPUTEROUTPUT">+---------------------------------------+</samp>
+              <samp class="COMPUTEROUTPUT">| Connected!                            |</samp>
+              <samp class="COMPUTEROUTPUT">|                                       |</samp>
+              <samp class="COMPUTEROUTPUT">| sql-statement                         |</samp>
+              <samp class="COMPUTEROUTPUT">| help [tablename]                      |</samp>
+              <samp class="COMPUTEROUTPUT">| quit                                  |</samp>
+              <samp class="COMPUTEROUTPUT">|                                       |</samp>
+              <samp class="COMPUTEROUTPUT">+---------------------------------------+</samp>
+
+              <samp class="PROMPT">SQL&gt;</samp> <kbd class="USERINPUT">SELECT * FROM t;</kbd>
+              <samp class="COMPUTEROUTPUT">+----+----+</samp>
+              <samp class="COMPUTEROUTPUT">| ID1| ID2|</samp>
+              <samp class="COMPUTEROUTPUT">+----+----+</samp>
+              <samp class="COMPUTEROUTPUT">| a  | b  |</samp>
+              <samp class="COMPUTEROUTPUT">| a  | c  |</samp>
+              <samp class="COMPUTEROUTPUT">| b  | c  |</samp>
+              <samp class="COMPUTEROUTPUT">+----+----+</samp>
+              <samp class="COMPUTEROUTPUT">SQLRowCount returns 3</samp>
+              <samp class="COMPUTEROUTPUT">3 rows fetched</samp>
+
+              <samp class="PROMPT">SQL&gt;</samp> <kbd class="USERINPUT">quit</kbd>
+            </pre>
+          <p></p></div></div></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN2173">Further examples with the ODBC Interface</a></h2><div class="EXAMPLE"><a name="AEN2175"></a><p><b>Example 8-4. Simple import</b></p><p>          The following program connects to a database via ODBC, reads all of
+          the data from the table <tt class="LITERAL">employee</tt> (defined as
+          <tt class="LITERAL">employee(id int4, Name char(20))</tt>) and stores them
+          as facts with predicate name <tt class="LITERAL">emp</tt>. The database
+          name is <tt class="LITERAL">payroll </tt>, access is granted to the user
+          <tt class="LITERAL">scott</tt> with password <tt class="LITERAL">tiger</tt>.
+          </p><pre class="SCREEN">            #import(payroll,"scott","tiger","SELECT id, Name, FROM employee", emp, type: U_INT, Q_CONST).
+          </pre>
+        <p></p></div><div class="EXAMPLE"><a name="AEN2185"></a><p><b>Example 8-5. 3-coloring with tuple insertion</b></p><p>          The following program is an encoding of the 3-coloring problem:
+          given an undirected graph, represented by facts of the form
+          <tt class="LITERAL">edge(X,Y)</tt>, assign to each node one of three
+          colors such that no two adjacent nodes have the same
+          color. Assignments computed in the model(s) of the input program are
+          defined by the predicate <tt class="LITERAL">colored</tt>.  The program
+          shows how to export all of the atoms with predicate name colored
+          belonging to an answer set, in the relational table named
+          <tt class="LITERAL">colors</tt> of the data source
+          <tt class="LITERAL">postgres</tt>. Access is granted to the user
+          <tt class="LITERAL">username</tt> with password <tt class="LITERAL">passwd</tt>.
+          </p><pre class="SCREEN">            #export(postgres,"username","passwd",colored,colors).
+            node(X) :- edge(X,Y). 
+            node(Y) :- edge(X,Y). 
+            colored(X,red) v colored(X,green) v colored(X,blue) 
+            :- node(X). 
+            :- edge(X,Y), colored(X,C), colored(Y,C).
+          </pre>
+        <p></p></div><div class="EXAMPLE"><a name="AEN2195"></a><p><b>Example 8-6. 3-coloring with tuple replacement</b></p><p>          The following programs shows the main feature of the second form of
+          the <tt class="LITERAL">#export</tt> command. Given an undirected graph,
+          again we compute a 3-coloring of the graph.  However, we want to
+          replace all of the tuples previously stored in the table
+          <tt class="LITERAL">colors</tt> with the extent of the predicate
+          <tt class="LITERAL">colored</tt> of an answer set of the program.  The
+          data source is named <tt class="LITERAL">postgres</tt>, access is granted
+          to the user <tt class="LITERAL">username</tt> with password
+          <tt class="LITERAL">passwd</tt>.
+          </p><pre class="SCREEN">            #export(postgres,"username","passwd",colored,colors,"REPLACE").
+            node(X) :- edge(X,Y). 
+            node(Y) :- edge(X,Y). 
+            colored(X,red) v colored(X,green) v colored(X,blue) 
+            :- node(X). 
+            :- edge(X,Y), colored(X,C), colored(Y,C).
+          </pre>
+        <p></p></div><div class="NOTE"><blockquote class="NOTE"><p><b>Note: </b>          The argument <tt class="LITERAL">REPLACE</tt> without any further
+          specification, the removal of all tuples in the table
+          <tt class="LITERAL">tablename</tt> before adding any new tuples. To
+          perform a partial update, it is possible to specify <tt class="LITERAL">REPLACE
+          where</tt> followed by a string that contains an SQL condition;
+          this deletes the tuples for which that condition holds.
+        </p></blockquote></div></div></div><div class="CHAPTER"><hr><h1><a name="AEN2211"></a>Chapter 9. Technicalities</h1><div class="SECT1"><h2 class="SECT1"><a name="AEN2213">How does the system work?</a></h2><p>	An input program in the language of the respective front-end is
+	translated into an internal representation, which is then transformed
+	into an equivalent program without variables. This program is fed into
+	the model generator, which computes models, and subjects them to the
+	model checker. Each model approved by this last component is finally
+	post-processed by the according front-end again.
+      </p></div><div class="SECT1"><hr><h2 class="SECT1"><a name="AEN2216">Dynamic Body Reordering during Grounding</a></h2><p></p><p>	Positive body literals are ordered for efficiency:
+      </p><p>	- Those literals with unique variables are placed at the end of the
+	re-order rule body, since the join operation with the rest of the body
+	literals is equivalent to their Cartesian product.
+      </p><p>	- Literals using built-in predicates are moved to the foremost
+	position in the body where all their variables have been bound by
+	previous literals. This is because built-in predicates are evaluated
+	very easily, once their parameters are known, but would give a large
+	range of values to unbound variables.
+      </p><p>	- Other literals are sorted by increasing cardinality of their ground
+	occurrences and by decreasing number of shared variables.
+      </p><p>	This is the default optimisation. 
+      </p></div></div></div></body></html>

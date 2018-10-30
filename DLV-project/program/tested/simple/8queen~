@@ -1,0 +1,35 @@
+% q(row,col) : the position of the queen in the matrix 8x8 : one queen for each row in position C
+
+q(0,N) v q(1,N) v q(2,N) v q(3,N) v q(4,N) v q(5,N) v q(6,N) v q(7,N) :- #int(0,7,N). 
+
+%no queen on the same row unless it is the same queen
+
+:-q(X,Y),q(X,W),Y<>W.
+
+%no queen on the same col unless it is the same queen
+
+:-q(X,Y),q(W,Y),X<>W.
+
+%no queen on the same first diagonal : / unless it is the same queen
+
+:-q(X,Y),q(W,Z),W=X+N,Z=Y-N,N>0,.
+
+:-q(X,Y),q(W,Z),W=X-N,Z=Y+N,N>0.
+
+%no queen on the same second diagonal : \ unless it is the same queen
+
+:-q(X,Y),q(W,Z),W=X+N,Z=Y+N,N>0.
+
+:-q(X,Y),q(W,Z),W=X-N,Z=Y-N,N>0.
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+
+ strategic(Y) v strategic(Z) :- produced_by(X,Y,Z).
+
+ :- strategic(0).
+
+ Strategic(X) :- strategic(X).
+ Strategic(0) :- true.
+
+
+ strategic(W) :- controlled_by(W,X,Y,Z), Strategic(X), Strategic(Y), Strategic(Z).
+
+true.
+
+
+:~strategic(panino). [1:1]
+

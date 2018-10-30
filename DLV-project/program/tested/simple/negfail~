@@ -1,0 +1,10 @@
+human(X):- person(X),not alien(X).
+person(john).
+% SInce john is a person and is not a fact of alient, then john is a human
+
+%But what if alien does t contain all aliens ? john could be an alien even if it is 
+%not a fact of alien. In this case it is required to claim that john is not an alien
+%using true negation.
+
+
+

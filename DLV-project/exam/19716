@@ -1,0 +1,12 @@
+r(X,Y) :- p(Y,X).
+s(X,Y) :- r(X,Y).
+s(X,Z) :- r(X,Y), r(Y,Z).
+t(X,Y) :- s(X,Y), not r(X,Y).
+t(X,Y) :- t(Y,X).
+v(X,Y) :- t(X,Y), not s(X,Y).
+w(X,Y) :- v(X,Y), not t(X,Y).
+p(a,b).
+p(b,c).
+p(c,d).
+p(e,f).
+p(f,g).

@@ -1,0 +1,7 @@
+
+%fib3n = fibn1 + fibn2
+
+fibonacci(1,1).
+fibonacci(2,1).
+fibonacci(N3,X):- fibonacci(N1,Y),fibonacci(N2,Z),+(Z,Y,X),#succ(N1,N2),#succ(N2,N3).
+

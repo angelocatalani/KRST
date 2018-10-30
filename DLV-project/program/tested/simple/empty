@@ -1,0 +1,3 @@
+person(X):- male(X).
+person(X):- female(X).
+

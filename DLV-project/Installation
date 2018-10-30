@@ -1,0 +1,10 @@
+1) Uso lxle 1.6 appena scaricata
+
+2) installo i driver di ODBC ma le librerie stanno in usr/lib/x86...
+http://www.kaffeetalk.de/how-to-setup-and-configure-mysql-with-unixodbc-under-ubuntu-14-04/
+solo fino a odbcinst -s -q
+
+3) installo Unixodbc sudo-apt get install unixodbc (suggerito quando eseguo isql)
+
+4) modifico odbcinst e odbc come scritto tranne per driver e setup gia scritto bene 
+http://www.dlvsystem.com/html/DLV_User_Manual.html#ODBC

@@ -1,0 +1,19 @@
+% in this way the matrix is #maxint*#maxint and #maxint is passed by command-line with -N = ...
+
+rows(1..#maxint).
+cols(1..#maxint).
+
+% in a given position of the matrix there could be a queen or a noqueen
+%guess
+queen(I,J) v noqueen(I,J) :- rows(I),cols(J).
+
+%check : no same row,col;diagonals
+:-queen(I,J),queen(I,W),J<>W.
+:-queen(I,J),queen(W,J),I<>W.
+:-queen(X,Y),queen(W,Z),W=X+N,Z=Y-N,N>0,#int(N).
+:-queen(X,Y),queen(W,Z),W=X-N,Z=Y+N,N>0,#int(N).
+:-queen(X,Y),queen(W,Z),W=X+N,Z=Y+N,N>0,#int(N).
+:-queen(X,Y),queen(W,Z),W=X-N,Z=Y-N,N>0,#int(N).
+
+%check : the number of rows s.t there is a queen, equals to the number of rows => there are exactly as many queens as the number of rows
+:- not #count{I : queen(I,J)} = #maxint.

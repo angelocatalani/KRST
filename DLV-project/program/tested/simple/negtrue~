@@ -1,0 +1,5 @@
+human(X):- person(X), - alien(X).
+person(john).
+-alien(john). 
+%whitout the last rule, john is not a human because the first rule 
+%states john is a human only if he is akowledged that he is not an alien

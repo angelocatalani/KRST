@@ -1,0 +1,16 @@
+a v b.
+c:- b.
+:~a. [20:1]
+:~b. [1:1]
+:~c. [1:1]
+
+%the result is different if the first constraint has a higher weight or higher level
+% [100:1] or [1:100]
+%[weight : level]
+
+%Under prioritization, the semantics minimizes the violation of the constraints of
+%the highest priority level first; then the lower priority levels are considered one
+% after the other in descending order.
+
+%In the presence of weights, best models minimize the sum of the weights of the
+%violated weak constraints
